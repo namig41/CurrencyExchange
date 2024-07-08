@@ -1,6 +1,6 @@
-from dao.base import BaseDao
+from dao.base import BaseDAO
 
-class DAO(BaseDao):
+class DAO(BaseDAO):
     """
         Класс, который реализует базовые манипуляции с БД
     """
