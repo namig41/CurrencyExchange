@@ -1,10 +1,11 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
 import json
 
 from currencies.router import CurrenciesRouter
 from exchange_rates.router import ExchangeRatesRouter
+
 from handlers.http_request import HTTPRequest
+from handlers.http_response import HTTPResponse
 
 class SimpleHandler(BaseHTTPRequestHandler):
 
@@ -22,22 +23,20 @@ class SimpleHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        request = HTTPRequest()
-        request.path = self.path
-        request.param = self.get_query()
+        request = HTTPRequest(self.path)
+        request.parse()
         
+        response = HTTPResponse(404, "Not Found")
         for router in self.routers:
             if self.path.startswith(router.prefix):
-                self.http_code, self.message = router.handle_get(request)
+                response = router.handle_get(request)
                 break
 
-        self.do_response()
-
-
+        self.do_response(response)
 
     def do_POST(self):
-        request = HTTPRequest()
-        request.path = self.path
+        request = HTTPRequest(self.path)
+        request.parse()
 
         content = None
         content_length = int(self.headers.get('Content-Length', 0))
@@ -46,25 +45,22 @@ class SimpleHandler(BaseHTTPRequestHandler):
         if content:
              request.data = json.loads(content.decode('utf-8'))
 
+        response = HTTPResponse(404, "Not Found")
         for router in self.routers:
             if self.path.startswith(router.prefix):
-                self.http_code, self.message = router.handle_post(request)
+                response = router.handle_post(request)
                 break
 
-        self.do_response()
+        self.do_response(response)
 
-    def do_response(self):
-        # Sent response's header
-        self.send_response(self.http_code)
+    def do_response(self, response: HTTPResponse):
+        self.send_response(response.status_code)
         self.send_header("Content-type", 'text/json')
         self.end_headers()
-        # Sent response's body
-        response_content = json.dumps(self.message)
+
+        response_content = json.dumps(response.data)
         self.wfile.write(response_content.encode())
     
-    def get_query(self):
-        parsed_url = urlparse(self.path)
-        return parse_qs(parsed_url.query)
     
 def run(server_class=HTTPServer, handler_class=SimpleHandler, port=8000):
     server_address = ('', port)
