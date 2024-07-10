@@ -4,30 +4,32 @@ from handlers.base_router import BaseRouter
 from handlers.http_response import HTTPResponse  
 from handlers.http_request import HTTPRequest
 from currencies.dao import CurrenciesDAO
+from currencies.errors import CurrencyNotFoundError
 
-from pathlib import PurePosixPath
 
 class CurrenciesRouter(BaseRouter):
 
     def __init__(self):
-
         self.prefix = "/currencies"
         self.dao = CurrenciesDAO()
 
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:
-
-        print(request.parts)
-
-        if path:
-            data = self.dao.find_all()
-        else:
-            data = self.dao.find_by_name(cur_code)
+        if len(request.parts) == 2:
+            data = self.dao.find_by(code=request.parts[1])
+            if not data:
+                return CurrencyNotFoundError(request.parts[1])
+            return HTTPResponse(200, data)
         
-        response = HTTPResponse(200, data)
-        return response
+        if len(request.parts) == 1:
+            data = self.dao.find_all()
+            return HTTPResponse(200, data)
+        
+        return CurrencyNotFoundError()
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-
+        if request.parts:
+            self.dao.insert(request.body["baseCurrencyCode"], )
+            return HTTPResponse(200, "Успешно")
 
         return HTTPResponse(200, "Успешно")
 

@@ -10,12 +10,18 @@ CREATE TABLE IF NOT EXISTS Currencies (
 
 CREATE TABLE IF NOT EXISTS ExchangeRates (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    BaseCurrencyId INTEGER UNIQUE,
-    TargetCurrencyId INTEGER UNIQUE,
+    BaseCurrencyId INTEGER,
+    TargetCurrencyId INTEGER,
     Rate DECIMAL(6, 2)
 );
 
-INSERT INTO Currencies (Code, FullName, Sign) 
+INSERT INTO Currencies (ID, Code, FullName, Sign) 
 VALUES 
-    ('USD', 'United States dollar', '$'),
-    ('EUR', 'Euro', '€');
+    (1, 'USD', 'United States dollar', '$'),
+    (2, 'EUR', 'Euro', '€'),
+    (3, 'AUD', 'Australian dollar', 'A€');
+
+INSERT INTO ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate) 
+VALUES 
+    (1, 1, 2, 0.92),
+    (2, 1, 3, 1.45);

@@ -10,6 +10,10 @@ class BaseDAO(ABC):
         pass
 
     @abstractmethod
+    def find_by(self, **kwargs) -> dict | None:
+        pass
+
+    @abstractmethod
     def find_all(self):
         pass
 

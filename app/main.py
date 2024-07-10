@@ -3,17 +3,17 @@ import json
 
 from currencies.router import CurrenciesRouter
 from exchange_rates.router import ExchangeRatesRouter
+from exchange.router import ExchangeRouter
 
 from handlers.http_request import HTTPRequest
 from handlers.http_response import HTTPResponse
 
-class SimpleHandler(BaseHTTPRequestHandler):
-
-    http_code, message = 500, {'message': 'The server is in its initial state'}
+class HTTPHandler(BaseHTTPRequestHandler):
 
     routers = [
         CurrenciesRouter(),
-        ExchangeRatesRouter()
+        ExchangeRatesRouter(),
+        ExchangeRouter()
     ]
 
     def _set_headers(self, status_code=200, content_type='text/html'):
@@ -43,7 +43,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         if content_length > 0:
            content = self.rfile.read(content_length)
         if content:
-             request.data = json.loads(content.decode('utf-8'))
+             request.body = json.loads(content.decode('utf-8'))
 
         response = HTTPResponse(404, "Not Found")
         for router in self.routers:
@@ -62,7 +62,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         self.wfile.write(response_content.encode())
     
     
-def run(server_class=HTTPServer, handler_class=SimpleHandler, port=8000):
+def run(server_class=HTTPServer, handler_class=HTTPHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print(f'Сервер начал работу {port}...')

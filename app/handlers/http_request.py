@@ -1,6 +1,4 @@
 from urllib.parse import unquote, urlparse, parse_qs
-from pathlib import PurePosixPath
-
 
 class HTTPRequest:
     def __init__(self, path='/'):
@@ -10,9 +8,9 @@ class HTTPRequest:
         self.body = None
 
     def __str__(self) -> str:
-        return "path: {}, params: {}, body: {}".format(self.path, self.params, self.body)
+        return "path: {}, parts{}, params: {}, body: {}".format(self.path, self.parts, self.params, self.body)
     
     def parse(self):
-        self.path = urlparse(self.path)
-        self.param = parse_qs(self.path)
-        self.parts = self.path.split('/')
+        parsed_url = urlparse(self.path)
+        self.param = parse_qs(parsed_url.query)
+        self.parts = self.path.split('/')[1:]
