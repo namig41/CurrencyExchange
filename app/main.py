@@ -22,9 +22,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-
         request = HTTPRequest(self.path)
-        request.parse()
+        request.parse(self.headers, self.rfile)
         
         response = HTTPResponse(404, "Not Found")
         for router in self.routers:
@@ -36,19 +35,26 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         request = HTTPRequest(self.path)
-        request.parse()
+        request.parse(self.headers, self.rfile)  
 
-        content = None
-        content_length = int(self.headers.get('Content-Length', 0))
-        if content_length > 0:
-           content = self.rfile.read(content_length)
-        if content:
-             request.body = json.loads(content.decode('utf-8'))
+        print(request)    
 
         response = HTTPResponse(404, "Not Found")
         for router in self.routers:
             if self.path.startswith(router.prefix):
                 response = router.handle_post(request)
+                break
+
+        self.do_response(response)
+
+    def do_PATCH(self):
+        request = HTTPRequest(self.path)
+        request.parse(self.headers, self.rfile)
+
+        response = HTTPResponse(404, "Not Found")
+        for router in self.routers:
+            if self.path.startswith(router.prefix):
+                response = router.handle_patch(request)
                 break
 
         self.do_response(response)

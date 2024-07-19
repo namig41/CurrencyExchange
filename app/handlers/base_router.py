@@ -13,3 +13,6 @@ class BaseRouter(ABC):
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
         pass
 
+    @abstractmethod
+    def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
+        pass

@@ -41,5 +41,5 @@ class ExchangeRouter(BaseRouter):
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
         pass
 
-    def handle_delete(self, request: HTTPRequest) -> HTTPResponse:
+    def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
         pass

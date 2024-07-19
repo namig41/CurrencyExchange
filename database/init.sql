@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS ExchangeRates (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     BaseCurrencyId INTEGER,
     TargetCurrencyId INTEGER,
-    Rate DECIMAL(6, 2)
+    Rate DECIMAL(6, 2),
+    FOREIGN KEY (BaseCurrencyId) REFERENCES Currencies(ID),
+    FOREIGN KEY (TargetCurrencyId) REFERENCES Currencies(ID),
+    UNIQUE (BaseCurrencyId, TargetCurrencyId)
 );
 
 INSERT INTO Currencies (ID, Code, FullName, Sign) 
