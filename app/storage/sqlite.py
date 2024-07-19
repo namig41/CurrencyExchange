@@ -4,9 +4,10 @@ import sqlite3
 
 class SQLiteDatabase(DataBase):
 
+    is_connected = False
+
     def __init__(self, path = "database/db.db"):
         self.path = path
-        self.is_connected = False
 
     def init(self, path = "database/init.sql"):
         with open(path, "r") as f:

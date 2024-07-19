@@ -1,7 +1,6 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 
-class DataBase(ABC):
-
+class SingletonMeta(ABCMeta):
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
@@ -9,6 +8,8 @@ class DataBase(ABC):
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
         return cls._instances[cls]
+
+class DataBase(ABC, metaclass=SingletonMeta):
     
     @abstractmethod
     def init(self, path):

@@ -27,16 +27,18 @@ class CurrenciesRouter(BaseRouter):
         return CurrencyNotFoundError()
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        if request.parts:
-            self.dao.insert(request.body["baseCurrencyCode"], )
-            return HTTPResponse(200, "Успешно")
+        if request.body:
+            insert_data = {
+                "FullName": request.body["name"][0],
+                "Code": request.body["code"][0],
+                "Sign": request.body["sign"][0]
+            }
+            
+            self.dao.insert(insert_data)
+            data = self.dao.find_by(code=insert_data["Code"])
+            return HTTPResponse(200, data)
 
-        return HTTPResponse(200, "Успешно")
+        return CurrencyNotFoundError()
 
-    def handle_delete(self):
-        if self.path == self.prefix:
-            self._set_headers()
-            self.wfile.write(json.dumps({'message': 'Data deleted'}).encode('utf-8'))
-        else:
-            self._set_headers('text/html', 404)
-            self.wfile.write(b'Not Found') 
+    def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
+        pass
