@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 
 from currencies.router import CurrenciesRouter
+from currency.router import CurrencyRouter
 from exchange_rates.router import ExchangeRatesRouter
 from exchange.router import ExchangeRouter
 
@@ -12,6 +13,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
     routers = [
         CurrenciesRouter(),
+        CurrencyRouter(),
         ExchangeRatesRouter(),
         ExchangeRouter()
     ]
@@ -36,8 +38,6 @@ class HTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)  
-
-        print(request)    
 
         response = HTTPResponse(404, "Not Found")
         for router in self.routers:
