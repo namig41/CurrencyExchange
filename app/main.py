@@ -4,6 +4,7 @@ import json
 from currencies.router import CurrenciesRouter
 from currency.router import CurrencyRouter
 from exchange_rates.router import ExchangeRatesRouter
+from exchange_rate.router import ExchangeRateRouter
 from exchange.router import ExchangeRouter
 
 from handlers.http_request import HTTPRequest
@@ -15,6 +16,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         CurrenciesRouter(),
         CurrencyRouter(),
         ExchangeRatesRouter(),
+        ExchangeRateRouter(),
         ExchangeRouter()
     ]
 

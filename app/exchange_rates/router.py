@@ -1,11 +1,11 @@
-import json
-
-from currencies.dao import CurrenciesDAO
 from handlers.base_router import BaseRouter
 from handlers.http_response import HTTPResponse
 from handlers.http_request import HTTPRequest
-from exchange_rates.dao import ExchangeRateDAO
-from exchange_rates.errors import ExchangeRateNotFoundError, ExchangeRateMissingError
+
+from currencies.dao import CurrenciesDAO
+
+from exchange_rates.dao import ExchangeRatesDAO
+from exchange_rates.errors import ExchangeRatesNotFoundError, ExchangeRatesMissingError
 
 
 class ExchangeRatesRouter(BaseRouter):
@@ -13,7 +13,7 @@ class ExchangeRatesRouter(BaseRouter):
     def __init__(self):
         self.prefix = "/exchangeRates"
 
-        self.dao_exchange_rate = ExchangeRateDAO()
+        self.dao_exchange_rate = ExchangeRatesDAO()
         self.dao_currencies = CurrenciesDAO()
 
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:
@@ -21,17 +21,17 @@ class ExchangeRatesRouter(BaseRouter):
             data = self.dao_exchange_rate.find_all()
             return HTTPResponse(200, data)
         
-        return ExchangeRateNotFoundError()
+        return ExchangeRatesNotFoundError()
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
         from_currency = self.dao_currencies.find_by(code=request.body["baseCurrencyCode"][0])
         to_currency = self.dao_currencies.find_by(code=request.body["targetCurrencyCode"][0])
 
         if not from_currency:
-            return ExchangeRateNotFoundError(request.body["baseCurrencyCode"][0])
+            return ExchangeRatesNotFoundError(request.body["baseCurrencyCode"][0])
         
         if not to_currency:
-            return ExchangeRateNotFoundError(request.body["targetCurrencyCode"][0])
+            return ExchangeRatesNotFoundError(request.body["targetCurrencyCode"][0])
         
         insert_data = {
             "BaseCurrencyId": from_currency["id"],

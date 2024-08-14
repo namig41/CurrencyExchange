@@ -28,3 +28,7 @@ class SQLiteDatabase(DataBase):
     
     def is_open(self):
         return self.is_connected
+    
+
+sqllite_database = SQLiteDatabase()
+sqllite_database.open()

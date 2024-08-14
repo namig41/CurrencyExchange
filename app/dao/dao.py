@@ -1,6 +1,6 @@
 from dao.base import BaseDAO
 
-from storage.sqlite import SQLiteDatabase
+from storage.sqlite import sqllite_database 
 
 class DAO(BaseDAO):
     """
@@ -9,10 +9,7 @@ class DAO(BaseDAO):
     
     def __init__(self, table_name=None):
         self.table_name = table_name
-
-        self.database = SQLiteDatabase()
-        self.database.open()
-        self.database.init()
+        self.database = sqllite_database
 
     def find_by_id(self, id) -> dict:
         query = "SELECT * FROM %s WHERE id = %s" % (self.table_name, id)
@@ -58,13 +55,16 @@ class DAO(BaseDAO):
         query =  "INSERT INTO  %s (%s) VALUES (%s)"  %  (self.table_name, columns, values)
         self.database.execute(query)
 
-    def update(self, data: dict):
+    def update(self, data: dict, **kwargs):
         columns = ",".join(data.keys())
         values = ",".join("'" + str(value) + "'" if isinstance(value, str) else str(value) for value in data.values())
+        conditions = " AND ".join([f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
 
-        query  =   "UPDATE  %s SET %s WHERE id = %s"  %  (self.table_name, columns, values, )
+        query  =   "UPDATE %s SET %s WHERE %s"  %  (self.table_name, columns, values, conditions)
         self.database.execute(query)
 
-    def delete(self, id):
-        query =   "DELETE FROM  %s WHERE id  =  %s"  %  (self.table_name, id)
+    def delete(self, **kwargs):
+        conditions = " AND ".join([f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
+        
+        query = "DELETE FROM  %s WHERE id  =  %s"  %  (self.table_name, conditions)
         self.database.execute(query)

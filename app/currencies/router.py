@@ -4,7 +4,7 @@ from handlers.base_router import BaseRouter
 from handlers.http_response import HTTPResponse  
 from handlers.http_request import HTTPRequest
 from currencies.dao import CurrenciesDAO
-from currencies.errors import CurrencyNotFoundError
+from currencies.errors import CurrencyNotFoundError, CurrencyAlreadyExistsError, RequiredFieldMissingError
 
 
 class CurrenciesRouter(BaseRouter):
@@ -28,14 +28,23 @@ class CurrenciesRouter(BaseRouter):
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
         if request.body:
-            insert_data = {
-                "FullName": request.body["name"][0],
-                "Code": request.body["code"][0],
-                "Sign": request.body["sign"][0]
-            }
+
+            if "name" in request.body and "code" in request.body and "sign" in request.body:
+                insert_data = {
+                    "FullName": request.body["name"][0],
+                    "Code": request.body["code"][0],
+                    "Sign": request.body["sign"][0]
+                }
+
+                data = self.dao.find_by(code=insert_data["Code"])
+                if not data:
+                    self.dao.insert(insert_data)
+                    data = self.dao.find_by(code=insert_data["Code"])
+                else:
+                    return CurrencyAlreadyExistsError()
+            else:
+                return RequiredFieldMissingError()
             
-            self.dao.insert(insert_data)
-            data = self.dao.find_by(code=insert_data["Code"])
             return HTTPResponse(200, data)
 
         return CurrencyNotFoundError()

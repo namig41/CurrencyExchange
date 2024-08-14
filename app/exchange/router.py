@@ -1,6 +1,6 @@
 import json
 
-from exchange_rates.dao import ExchangeRateDAO
+from exchange_rates.dao import ExchangeRatesDAO
 from currencies.dao import CurrenciesDAO
 
 from handlers.base_router import BaseRouter
@@ -13,7 +13,7 @@ class ExchangeRouter(BaseRouter):
 
     def __init__(self):
         self.prefix = "/exchange"
-        self.dao_exchange_rate = ExchangeRateDAO()
+        self.dao_exchange_rate = ExchangeRatesDAO()
         self.dao_currencies = CurrenciesDAO()
 
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:
