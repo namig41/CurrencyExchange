@@ -9,8 +9,8 @@ from exchange_rates.router import ExchangeRatesRouter
 from exchange_rate.router import ExchangeRateRouter
 from exchange.router import ExchangeRouter
 
-from requestschema.http_request import HTTPRequest
-from requestschema.http_response import HTTPResponse
+from request.http_request import HTTPRequest
+from response.http_response import HTTPResponse
 
 from response.common_error import NotFound
 

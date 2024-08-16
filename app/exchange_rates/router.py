@@ -1,6 +1,6 @@
 from router.base import BaseRouter
-from requestschema.http_response import HTTPResponse
-from requestschema.http_request import HTTPRequest
+from response.http_response import HTTPResponse
+from request.http_request import HTTPRequest
 
 from currencies.dao import CurrenciesDAO
 

@@ -1,8 +1,8 @@
 from router.base import BaseRouter
 
 from currencies.dao import CurrenciesDAO
-from requestschema.http_response import HTTPResponse
-from requestschema.http_request import HTTPRequest
+from response.http_response import HTTPResponse
+from request.http_request import HTTPRequest
 
 from exchange_rates.dao import ExchangeRatesDAO
 

@@ -1,4 +1,4 @@
-from requestschema.http_response import HTTPResponse
+from response.http_response import HTTPResponse
 
 from response.common_error import (DatabaseError,
                                    RequiredFieldMissingError, 

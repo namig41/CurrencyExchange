@@ -1,4 +1,4 @@
-from requestschema.http_response import HTTPResponse
+from response.http_response import HTTPResponse
 
 class ErrorResponse(HTTPResponse):
     def __init__(self, status_code: int, message: str):
