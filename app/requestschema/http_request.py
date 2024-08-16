@@ -15,16 +15,17 @@ class HTTPRequest:
         parsed_url = urlparse(self.path)
         self.param = parse_qs(parsed_url.query)
         self.parts = self.path.split('/')[1:]
+        self.parts[-1] = self.parts[-1][:self.parts[-1].find("?")]
 
         content_length = int(headers.get('Content-Length', 0))
         if content_length > 0:
-            content_type = headers.get('Content-Type')
-            content = rfile.read(content_length).decode('utf-8')
-            if content_type == 'application/json':
-                self.body = json.loads(content)
-            elif content_type == 'application/x-www-form-urlencoded':
-                self.body = parse_qs(content)
-            else:
-                self.body = content
+            return 
+
+        content = rfile.read(content_length).decode('utf-8')
+        content_type = headers.get('Content-Type')
+        if content_type == 'application/json':
+            self.body = json.loads(content)
+        elif content_type == 'application/x-www-form-urlencoded':
+            self.body = parse_qs(content)
         else:
-            self.body = {}
+            self.body = content

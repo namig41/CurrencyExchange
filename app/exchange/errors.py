@@ -1,5 +1,7 @@
-from handlers.http_response import HTTPResponse
+from requestschema.http_response import HTTPResponse
+from response.common_error import NotFound 
 
-class CurrencyNotFoundError(HTTPResponse):
+class ExchangeNotFoundError(NotFound):
     def __init__(self):
-        super().__init__(404, {'message': f'Currency not found'})
+        super().__init__('Exchange not found')
+

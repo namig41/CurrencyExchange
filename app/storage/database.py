@@ -12,11 +12,11 @@ class SingletonMeta(ABCMeta):
 class DataBase(ABC, metaclass=SingletonMeta):
     
     @abstractmethod
-    def init(self, path):
+    def init(self, path: str):
         pass
 
     @abstractmethod
-    def open(self, path):
+    def open(self, path: str):
         pass
 
     @abstractmethod
@@ -24,7 +24,7 @@ class DataBase(ABC, metaclass=SingletonMeta):
         pass
 
     @abstractmethod
-    def execute(self, query):
+    def execute(self, query: str):
         pass
 
     @abstractmethod

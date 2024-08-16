@@ -1,14 +1,18 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 
+from env import Settings
+
 from currencies.router import CurrenciesRouter
 from currency.router import CurrencyRouter
 from exchange_rates.router import ExchangeRatesRouter
 from exchange_rate.router import ExchangeRateRouter
 from exchange.router import ExchangeRouter
 
-from handlers.http_request import HTTPRequest
-from handlers.http_response import HTTPResponse
+from requestschema.http_request import HTTPRequest
+from requestschema.http_response import HTTPResponse
+
+from response.common_error import NotFound
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
@@ -29,9 +33,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)
         
-        response = HTTPResponse(404, "Not Found")
+        uri = request.parts[0]
+        response = NotFound()
         for router in self.routers:
-            if self.path.startswith(router.prefix):
+            if uri == router.prefix:
                 response = router.handle_get(request)
                 break
 
@@ -41,9 +46,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)  
 
-        response = HTTPResponse(404, "Not Found")
+        uri = request.parts[0]
+        response = NotFound()
         for router in self.routers:
-            if self.path.startswith(router.prefix):
+            if uri == router.prefix:
                 response = router.handle_post(request)
                 break
 
@@ -53,9 +59,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)
 
-        response = HTTPResponse(404, "Not Found")
+        uri = request.parts[0]
+        response = NotFound()
         for router in self.routers:
-            if self.path.startswith(router.prefix):
+            if uri == router.prefix:
                 response = router.handle_patch(request)
                 break
 
@@ -70,11 +77,18 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.wfile.write(response_content.encode())
     
     
-def run(server_class=HTTPServer, handler_class=HTTPHandler, port=8000):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    print(f'Сервер начал работу {port}...')
-    httpd.serve_forever()
+def run(server_class=HTTPServer, handler_class=HTTPHandler, hostname='127.0.0.1', port=8080):
+    server_address = (hostname, port)
+    websererver = server_class(server_address, handler_class)
+    print(f'Сервер запущен {hostname}:{port}...')
+
+    try:
+        websererver.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    websererver.server_close()
+    print("Сервер остановлен.")
 
 
 

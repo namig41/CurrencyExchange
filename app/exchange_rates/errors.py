@@ -1,9 +1,11 @@
-from handlers.http_response import HTTPResponse
+from requestschema.http_response import HTTPResponse
 
-class ExchangeRatesMissingError(HTTPResponse):
-    def __init__(self):
-        super().__init__(400, {'error': 'Currency pair codes are missing in the request'})
+from response.common_error import (DatabaseError,
+                                   RequiredFieldMissingError, 
+                                   BadRequest,
+                                   NotFound,
+                                   Conflict)
 
-class ExchangeRatesNotFoundError(HTTPResponse):
+class ExchangeRatesNotFoundError(NotFound):
     def __init__(self):
-        super().__init__(404, {'error': f'Exchange rate for pair not found'})
+        super().__init__(f'Exchange rate not found')
