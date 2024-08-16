@@ -15,7 +15,8 @@ class HTTPRequest:
         parsed_url = urlparse(self.path)
         self.param = parse_qs(parsed_url.query)
         self.parts = self.path.split('/')[1:]
-        self.parts[-1] = self.parts[-1][:self.parts[-1].find("?")]
+        index = self.parts[-1].find("?")
+        self.parts[-1] = self.parts[-1] if index == -1 else self.parts[-1][:index]
 
         content_length = int(headers.get('Content-Length', 0))
         if content_length > 0:

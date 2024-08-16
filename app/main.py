@@ -32,7 +32,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)
-        
+
         uri = request.parts[0]
         response = NotFound()
         for router in self.routers:

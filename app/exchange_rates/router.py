@@ -27,6 +27,7 @@ class ExchangeRatesRouter(BaseRouter):
         return SuccessResponse(exchange_rate)
         
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
+        
         from_currency = self.dao_currencies.find_by(code=request.body["baseCurrencyCode"][0])
         to_currency = self.dao_currencies.find_by(code=request.body["targetCurrencyCode"][0])
 
