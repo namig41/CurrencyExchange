@@ -12,8 +12,6 @@ class Settings:
     USERNAME: str
     PASSWORD: str
 
-
-
 Settings.DB_PATH = config.get('Database', 'DB_PATH')
 Settings.INIT_PATH = config.get('Database', 'INIT_PATH')
 Settings.HOST = config.get('Database', 'HOST')
