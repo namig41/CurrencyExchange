@@ -1,6 +1,6 @@
-from app.infrastructure.dao.base import DAO
+from infrastructure.dao.base import DAO
 
 class ExchangeRatesDAO(DAO):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(table_name="ExchangeRates")

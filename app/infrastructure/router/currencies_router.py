@@ -1,15 +1,15 @@
-from app.infrastructure.router.base import BaseRouter
+from infrastructure.router.base import BaseRouter
 
-from app.infrastructure.http.request.http_request import HTTPRequest
-from app.infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.request.http_request import HTTPRequest
+from infrastructure.http.response.http_response import HTTPResponse
 
-from app.infrastructure.dao.currencies import CurrenciesDAO
+from infrastructure.dao.currencies import CurrenciesDAO
 
-from app.infrastructure.http.response.currency_error import (CurrencyNotFoundError,
+from infrastructure.http.response.currency_error import (CurrencyNotFoundError,
                                     CurrencyAlreadyExistsError,
                                                              RequiredFieldMissingError)
 
-from app.infrastructure.http.response.base_success import SuccessResponse
+from infrastructure.http.response.base_success import SuccessResponse
 
 
 class CurrenciesRouter(BaseRouter):

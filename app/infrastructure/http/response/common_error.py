@@ -1,4 +1,4 @@
-from app.infrastructure.http.response.base_error import ErrorResponse
+from infrastructure.http.response.base_error import ErrorResponse
 
 class BadRequest(ErrorResponse):
     def __init__(self, message: str = "Bad request"):

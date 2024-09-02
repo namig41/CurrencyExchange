@@ -1,4 +1,4 @@
-from app.infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.response.http_response import HTTPResponse
 
 class SuccessResponse(HTTPResponse):
     def __init__(self, data: dict):

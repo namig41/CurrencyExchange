@@ -1,16 +1,16 @@
-from app.infrastructure.dao.exchange_rates import ExchangeRatesDAO
-from app.infrastructure.dao.currencies import CurrenciesDAO
+from infrastructure.dao.exchange_rates import ExchangeRatesDAO
+from infrastructure.dao.currencies import CurrenciesDAO
 
-from app.infrastructure.router.base import BaseRouter
-from app.infrastructure.http.response.http_response import HTTPResponse
-from app.infrastructure.http.request.http_request import HTTPRequest
+from infrastructure.router.base import BaseRouter
+from infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.request.http_request import HTTPRequest
 
-from app.infrastructure.http.response.exchange_errors import ExchangeNotFoundError
+from infrastructure.http.response.exchange_errors import ExchangeNotFoundError
 
-from app.infrastructure.http.response.currency_error import (CurrencyNotFoundError,
+from infrastructure.http.response.currency_error import (CurrencyNotFoundError,
                                                              RequiredFieldMissingError)
 
-from app.infrastructure.http.response.base_success import SuccessResponse
+from infrastructure.http.response.base_success import SuccessResponse
 
 class ExchangeRouter(BaseRouter):
 

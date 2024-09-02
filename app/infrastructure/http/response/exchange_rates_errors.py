@@ -1,5 +1,5 @@
-from app.infrastructure.http.response.http_response import HTTPResponse
-from app.infrastructure.http.response.common_error import (DatabaseError, RequiredFieldMissingError, BadRequest, NotFound, Conflict)
+from infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.response.common_error import (DatabaseError, RequiredFieldMissingError, BadRequest, NotFound, Conflict)
 
 class ExchangeRatesNotFoundError(NotFound):
     def __init__(self):

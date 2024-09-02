@@ -1,4 +1,4 @@
-from app.infrastructure.storage.database import DataBase
+from infrastructure.storage.database import DataBase
 import sqlite3
 
 

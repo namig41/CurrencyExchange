@@ -1,0 +1,3 @@
+
+class MoneyInvalidValue(Exception):
+    pass

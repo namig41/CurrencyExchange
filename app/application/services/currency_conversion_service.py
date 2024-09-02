@@ -1,4 +1,4 @@
-from app.domain.services.conversion_service import ConversionService
+from domain.services.conversion_service import ConversionService
 
 
 class CurrencyConversionService:

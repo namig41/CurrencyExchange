@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from app.infrastructure.http.request.http_request import HTTPRequest
-from app.infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.request.http_request import HTTPRequest
+from infrastructure.http.response.http_response import HTTPResponse
 
 class BaseRouter(ABC):
     

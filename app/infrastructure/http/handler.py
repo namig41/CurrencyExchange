@@ -3,16 +3,16 @@ from typing import Callable
 
 import json
 
-from app.infrastructure.router.currencies_router import CurrenciesRouter
-from app.infrastructure.router.currency_router import CurrencyRouter
-from app.infrastructure.router.exchange_rates_router import ExchangeRatesRouter
-from app.infrastructure.router.exchange_rate_router import ExchangeRateRouter
-from app.infrastructure.router.exchange_router import ExchangeRouter
+from infrastructure.router.currencies_router import CurrenciesRouter
+from infrastructure.router.currency_router import CurrencyRouter
+from infrastructure.router.exchange_rates_router import ExchangeRatesRouter
+from infrastructure.router.exchange_rate_router import ExchangeRateRouter
+from infrastructure.router.exchange_router import ExchangeRouter
 
-from app.infrastructure.http.request.http_request import HTTPRequest
-from app.infrastructure.http.response.http_response import HTTPResponse
+from infrastructure.http.request.http_request import HTTPRequest
+from infrastructure.http.response.http_response import HTTPResponse
 
-from app.infrastructure.http.response.common_error import NotFound
+from infrastructure.http.response.common_error import NotFound
 
 class HTTPHandler(BaseHTTPRequestHandler):
 

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 
-from app.infrastructure.storage.sqlite import sqlite_database
+from infrastructure.storage.sqlite import sqlite_database
 
 class BaseDAO(ABC):
     """
@@ -13,7 +13,7 @@ class BaseDAO(ABC):
         pass
 
     @abstractmethod
-    def find_by(self, **kwargs) -> dict | None:
+    def find_by(self, **kwargs):
         pass
 
     @abstractmethod
