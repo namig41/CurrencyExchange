@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 from domain.value_objects.currency import Currency
 from domain.entities.money import Money
 

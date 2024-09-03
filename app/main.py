@@ -3,7 +3,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from infrastructure.http.handler import HTTPHandler
 
 
-def run(server_class=HTTPServer, handler=HTTPHandler, hostname='127.0.0.1', port=8080):
+def run(server_class=HTTPServer, handler=HTTPHandler, hostname='0.0.0.0', port=8000):
     server_address = (hostname, port)
     web_server = server_class(server_address, handler)
     print(f'Сервер запущен {hostname}:{port}...')

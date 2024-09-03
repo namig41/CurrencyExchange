@@ -6,12 +6,12 @@ class SQLiteDatabase(DataBase):
 
     is_connected = False
 
-    def __init__(self, path: str = "../database/db.db"):
+    def __init__(self, path: str = "database/db.db"):
         self.path = path
         self.connection = None
         self.cursor = None
 
-    def init(self, path: str = "../database/init.sql"):
+    def init(self, path: str = "database/init.sql"):
         with open(path, "r") as f:
             query_init = f.read()
             self.cursor.executescript(query_init)
