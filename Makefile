@@ -1,6 +1,6 @@
 DC = docker compose
 SERVICE_NAME = currency_exchange
-APP_FILE = docker_compose/app.yaml
+APP_FILE = docker_compose/yaml
 STORAGE_FILE = docker_compose/storage.yaml
 
 .PHONY: app

@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 
+from domain.entities.base import BaseEntity
 from domain.value_objects.currency import Currency
 
-from domain.exceptions.money import MoneyInvalidValue
+from domain.exceptions.money import MoneyInvalidValueException
 
 @dataclass
-class Money:
+class Money(BaseEntity):
     amount: float
     currency: Currency
 
@@ -14,7 +15,7 @@ class Money:
 
     def _validate(self) -> None:
         if self.amount < 0:
-            raise MoneyInvalidValue("Amount of money cannot be negative")
+            raise MoneyInvalidValueException()
 
     def __repr__(self):
         return f"Money(amount={self.amount}, currency={self.currency})"
