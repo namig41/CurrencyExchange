@@ -13,5 +13,6 @@ class BaseValue(ABC, Generic[VT]):
     @abstractmethod
     def validate(self):
         ...
+
         
     

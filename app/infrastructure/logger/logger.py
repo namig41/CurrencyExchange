@@ -7,7 +7,7 @@ from infrastructure.logger.base import ILogger
 class Logger(ILogger):
     
     _logger: logging.Logger
-    _rror_logger: logging.Logger
+    _error_logger: logging.Logger
 
     def info(self, message: str) -> None:
         self._logger.info(message)

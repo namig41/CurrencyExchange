@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from dataclasses import dataclass
+from typing import List, Dict, Any, Protocol
 
-from infrastructure.storage.sqlite import sqlite_database
+from infrastructure.database.database import IDataBase
 
-class BaseDAO(ABC):
+class BaseDAO(Protocol):
     """
         Абстрактный класс, который реализует базовые манипуляции с БД
     """
@@ -32,15 +33,14 @@ class BaseDAO(ABC):
     def delete(self, **kwargs):
         pass
 
-
+@dataclass
 class DAO(BaseDAO):
     """
         Класс, который реализует базовые манипуляции с БД
     """
-
-    def __init__(self, table_name=None):
-        self.table_name = table_name
-        self.database = sqlite_database
+    
+    table_name: str
+    database: IDataBase
 
     def find_by_id(self, id) -> None:
         query = "SELECT * FROM %s WHERE id = %s" % self.table_name, id

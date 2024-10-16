@@ -1,6 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-from infrastructure.http.handler import HTTPHandler
+from application.api.handler import HTTPHandler
 
 
 def run(server_class=HTTPServer, handler=HTTPHandler, hostname='0.0.0.0', port=8000):

@@ -1,6 +1,7 @@
+from dataclasses import dataclass, field
 from infrastructure.dao.base import DAO
 
-class ExchangeRatesDAO(DAO):
-
-    def __init__(self) -> None:
-        super().__init__(table_name="ExchangeRates")
+@dataclass
+class CurrenciesDAO(DAO):
+    table_name: str = field(default = "ExchangeRates")
+    

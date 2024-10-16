@@ -3,11 +3,11 @@ from typing import Callable
 
 import json
 
-from infrastructure.router.currencies_router import CurrenciesRouter
-from infrastructure.router.currency_router import CurrencyRouter
-from infrastructure.router.exchange_rates_router import ExchangeRatesRouter
-from infrastructure.router.exchange_rate_router import ExchangeRateRouter
-from infrastructure.router.exchange_router import ExchangeRouter
+from application.router.currencies import CurrenciesRouter
+from application.router.currency import CurrencyRouter
+from application.router.exchange_rates import ExchangeRatesRouter
+from application.router.exchange_rate import ExchangeRateRouter
+from application.router.exchange import ExchangeRouter
 
 from infrastructure.http.request.http_request import HTTPRequest
 from infrastructure.http.response.http_response import HTTPResponse
@@ -29,16 +29,6 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', content_type)
         self.end_headers()
 
-    def _requset_handler(self, request: HTTPRequest, callable: Callable[[HTTPRequest], HTTPResponse]) -> HTTPResponse:
-        uri: list = request.parts[0]
-        response: HTTPResponse = NotFound()
-        for router in self.routers:
-            if uri == router.prefix:
-                response = callable(request)
-                break
-
-        return response
-
     def do_GET(self):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)
@@ -49,8 +39,6 @@ class HTTPHandler(BaseHTTPRequestHandler):
             if uri == router.prefix:
                 response = router.handle_get(request)
                 break
-
-        self._requset_handler(request, router.handle_get)
 
         self.do_response(response)
 

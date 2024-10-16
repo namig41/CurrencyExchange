@@ -1,14 +1,13 @@
-from infrastructure.storage.database import DataBase
+from dataclasses import dataclass
 import sqlite3
 
-class SQLiteDatabase(DataBase):
+from infrastructure.database.database import IDataBase
 
-    is_connected = False
+@dataclass
+class SQLiteDatabase(IDataBase):
 
-    def __init__(self, path: str = "database/db.db"):
-        self.path = path
-        self.connection = None
-        self.cursor = None
+    is_connected: bool = False
+    path: str = "database/db.db"
 
     def init(self, path: str = "database/init.sql"):
         with open(path, "r") as f:
@@ -29,7 +28,3 @@ class SQLiteDatabase(DataBase):
     
     def is_open(self):
         return self.is_connected
-    
-
-sqlite_database = SQLiteDatabase()
-sqlite_database.connect()
