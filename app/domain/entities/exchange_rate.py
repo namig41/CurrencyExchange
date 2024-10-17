@@ -22,4 +22,3 @@ class ExchangeRate(BaseEntity):
         if self.baseCurrency == self.targetCurrency:
             raise EqualCurrencyException()
         
-    

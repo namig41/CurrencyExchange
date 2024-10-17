@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Dict, Any, Protocol
+from typing import List, Dict, Any
 
-from infrastructure.database.database import IDataBase
+from infrastructure.database.base import BaseDatabase
 
-class BaseDAO(Protocol):
+class BaseDAO(ABC):
     """
         Абстрактный класс, который реализует базовые манипуляции с БД
     """
@@ -14,23 +14,23 @@ class BaseDAO(Protocol):
         pass
 
     @abstractmethod
-    def find_by(self, **kwargs):
+    def find_by(self, **kwargs) -> dict | None:
         pass
 
     @abstractmethod
-    def find_all(self):
+    def find_all(self) -> list[dict[Any, Any]]:
         pass
 
     @abstractmethod
-    def insert(self, data):
+    def insert(self, data) -> None:
         pass
 
     @abstractmethod
-    def update(self, data):
+    def update(self, data) -> None:
         pass
 
     @abstractmethod
-    def delete(self, **kwargs):
+    def delete(self, **kwargs) -> None:
         pass
 
 @dataclass
@@ -39,10 +39,10 @@ class DAO(BaseDAO):
         Класс, который реализует базовые манипуляции с БД
     """
     
+    database: BaseDatabase
     table_name: str
-    database: IDataBase
 
-    def find_by_id(self, id) -> None:
+    def find_by_id(self, id: int) -> dict | None:
         query = "SELECT * FROM %s WHERE id = %s" % self.table_name, id
         result = self.database.execute(query)
 
@@ -79,14 +79,14 @@ class DAO(BaseDAO):
         results = [dict(zip(columns, row)) for row in rows]
         return results
 
-    def insert(self, data: dict):
+    def insert(self, data: dict) -> None:
         columns = ",".join(data.keys())
         values = ",".join("'" + str(value) + "'" if isinstance(value, str) else str(value) for value in data.values())
 
         query = "INSERT INTO  %s (%s) VALUES (%s)" % self.table_name, columns, values
         self.database.execute(query)
 
-    def update(self, data: dict, **kwargs):
+    def update(self, data: dict, **kwargs) -> None:
         columns = ",".join(data.keys())
         values = ",".join("'" + str(value) + "'" if isinstance(value, str) else str(value) for value in data.values())
         conditions = " AND ".join(
@@ -95,7 +95,7 @@ class DAO(BaseDAO):
         query = "UPDATE %s SET %s WHERE %s" % self.table_name, columns, values, conditions
         self.database.execute(query)
 
-    def delete(self, **kwargs):
+    def delete(self, **kwargs) -> None:
         conditions = " AND ".join(
             [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
 

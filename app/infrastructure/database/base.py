@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod, ABCMeta
-from typing import Protocol
 
-class IDataBase(Protocol):
+class BaseDatabase(ABC):
     
     @abstractmethod
     def init(self, path: str):

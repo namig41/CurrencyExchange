@@ -3,4 +3,5 @@ from infrastructure.dao.base import DAO
 
 @dataclass
 class CurrenciesDAO(DAO):
-    table_name: str = field(default = "currencies")
+    table_name: str = field(default = "currencies", kw_only=True)
+    

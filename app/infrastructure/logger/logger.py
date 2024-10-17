@@ -4,7 +4,7 @@ import logging
 from infrastructure.logger.base import ILogger
 
 @dataclass
-class Logger(ILogger):
+class Logger:
     
     _logger: logging.Logger
     _error_logger: logging.Logger

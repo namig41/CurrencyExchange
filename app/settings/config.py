@@ -4,17 +4,25 @@ config = configparser.ConfigParser()
 config.read(".env")
 
 class Settings:
+    SERVER_HOST: str
+    SERVER_PORT: str
+    
     DB_PATH: str
-    INIT_PATH: str
+    DB_INIT_PATH: str
 
-    HOST: str
-    PORT: int
-    USERNAME: str
-    PASSWORD: str
+    DB_HOST: str
+    DB_PORT: int
+    DB_USERNAME: str
+    DB_PASSWORD: str
 
-Settings.DB_PATH = config.get('Database', 'DB_PATH')
-Settings.INIT_PATH = config.get('Database', 'INIT_PATH')
-Settings.HOST = config.get('Database', 'HOST')
-Settings.PORT = config.get('Database', 'PORT')
-Settings.USERNAME = config.get('Database', 'USERNAME')
-Settings.PASSWORD = config.get('Database', 'PASSWORD')
+Settings.SERVER_HOST = config.get('SERVER', 'SERVER_HOST')
+Settings.SERVER_PORT = config.get('SERVER', 'SERVER_PORT')
+
+
+Settings.DB_PATH = config.get('DATABASE', 'DB_PATH')
+Settings.DB_INIT_PATH = config.get('DATABASE', 'DB_INIT_PATH')
+
+Settings.DB_HOST = config.get('DATABASE', 'DB_HOST')
+Settings.DB_PORT = config.get('DATABASE', 'DB_PORT')
+Settings.DB_USERNAME = config.get('DATABASE', 'DB_USERNAME')
+Settings.DB_PASSWORD = config.get('DATABASE', 'DB_PASSWORD')

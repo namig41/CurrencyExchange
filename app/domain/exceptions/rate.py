@@ -5,4 +5,4 @@ from domain.exceptions.base import ApplicationException
 class RateIsNegativeException(ApplicationException):
     @property
     def message(self):
-        return 'Обменный курс не может быть отрицальной'
+        return 'Обменный курс не может быть отрицательной'
