@@ -18,7 +18,6 @@ class Settings:
 Settings.SERVER_HOST = config.get('SERVER', 'SERVER_HOST')
 Settings.SERVER_PORT = config.get('SERVER', 'SERVER_PORT')
 
-
 Settings.DB_PATH = config.get('DATABASE', 'DB_PATH')
 Settings.DB_INIT_PATH = config.get('DATABASE', 'DB_INIT_PATH')
 

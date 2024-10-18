@@ -9,10 +9,10 @@ from application.router.exchange_rates import ExchangeRatesRouter
 from application.router.exchange_rate import ExchangeRateRouter
 from application.router.exchange import ExchangeRouter
 
-from infrastructure.http.request.http_request import HTTPRequest
-from infrastructure.http.response.http_response import HTTPResponse
+from application.http.request.http_request import HTTPRequest
+from application.http.response.http_response import HTTPResponse
 
-from infrastructure.http.response.common_error import NotFound
+from application.http.response.common_error import NotFound
 
 class HTTPHandler(BaseHTTPRequestHandler):
 

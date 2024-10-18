@@ -43,7 +43,7 @@ class DAO(BaseDAO):
     table_name: str
 
     def find_by_id(self, id: int) -> dict | None:
-        query = "SELECT * FROM %s WHERE id = %s" % self.table_name, id
+        query = "SELECT * FROM %s WHERE id = %s" % (self.table_name, id)
         result = self.database.execute(query)
 
         if result:
@@ -83,7 +83,7 @@ class DAO(BaseDAO):
         columns = ",".join(data.keys())
         values = ",".join("'" + str(value) + "'" if isinstance(value, str) else str(value) for value in data.values())
 
-        query = "INSERT INTO  %s (%s) VALUES (%s)" % self.table_name, columns, values
+        query = "INSERT INTO  %s (%s) VALUES (%s)" % (self.table_name, columns, values)
         self.database.execute(query)
 
     def update(self, data: dict, **kwargs) -> None:
@@ -99,5 +99,5 @@ class DAO(BaseDAO):
         conditions = " AND ".join(
             [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
 
-        query = "DELETE FROM  %s WHERE id  =  %s" % self.table_name, conditions
+        query = "DELETE FROM  %s WHERE id  =  %s" % (self.table_name, conditions)
         self.database.execute(query)

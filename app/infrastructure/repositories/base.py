@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from typing import Iterable
 
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
@@ -9,6 +10,10 @@ from domain.entities.exchange_rate import ExchangeRate
 class BaseCurrenciesRepository(ABC):
     @abstractmethod
     async def check_currency_exists_by_id(self, id: int) -> bool:
+        ...
+
+    @abstractmethod
+    async def get_currencies(self) -> Iterable[Currency]:
         ...
 
     @abstractmethod
@@ -26,7 +31,7 @@ class BaseExchangeRatesRepository(ABC):
         ...
 
     @abstractmethod
-    async def get_exchange_rate_by_id(self, id: int) -> ExchangeRate | None:
+    async def get_exchange_rate_by_id(self, base_currency: Currency, target_currency: Currency) -> ExchangeRate | None:
         ...
      
     @abstractmethod

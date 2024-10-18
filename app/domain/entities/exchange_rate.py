@@ -14,11 +14,11 @@ class ExchangeRate(BaseEntity):
         default_factory=count().__next__,
         kw_only=True,
     )
-    baseCurrency: Currency
-    targetCurrency: Currency
+    base_currency: Currency
+    target_currency: Currency
     rate: Rate
     
     def validate(self):
-        if self.baseCurrency == self.targetCurrency:
+        if self.base_currency == self.target_currency:
             raise EqualCurrencyException()
         

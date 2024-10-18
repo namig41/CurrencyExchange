@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Iterable
 
 from domain.entities.currency import Currency
 from infrastructure.repositories.base import BaseCurrenciesRepository
@@ -21,6 +22,9 @@ class MemoryCurrenciesRepository(BaseCurrenciesRepository):
             )
         except StopIteration:
             return False
+        
+    async def get_currencies(self) -> Iterable[Currency]:
+        return self._saved_currencies
         
     async def get_currency_by_id(self, id: int) -> Currency | None:
         try:

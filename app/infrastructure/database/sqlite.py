@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from functools import lru_cache
 from logging import Logger
 import sqlite3
 
@@ -6,13 +7,14 @@ from domain.exceptions.base import ApplicationException
 from infrastructure.database.base import BaseDatabase
 from infrastructure.exceptions.database import ConnectionFailedException, InitQueryExecutedFailedException, QueryExecutedFailedException
 from infrastructure.logger.base import ILogger
+from infrastructure.logger.logger import create_logger_dependency
 from settings.config import Settings
 
 @dataclass
 class SQLiteDatabase(BaseDatabase):
 
     path: str = field(kw_only=True)
-    logger: ILogger = field(default=Logger, kw_only=True)
+    logger: ILogger = field(default_factory=create_logger_dependency, kw_only=True)
     _is_connected: bool = field(default=False)
 
     def init(self, init_path: str):
@@ -52,13 +54,13 @@ class SQLiteDatabase(BaseDatabase):
         return self._is_connected
 
 
-def sqlite_database_build() -> BaseDatabase:
-    database: BaseDatabase = SQLiteDatabase()
+@lru_cache
+def sqlite_database_factory() -> BaseDatabase:
+    database: BaseDatabase = SQLiteDatabase(path=Settings.DB_PATH)
     
     try:
-        database.connect(path=Settings.DB_PATH)
+        database.connect()
         database.init(Settings.DB_INIT_PATH)
-        
         return database
     except ApplicationException as exception:
         raise ApplicationException
