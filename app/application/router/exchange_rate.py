@@ -1,14 +1,9 @@
-from infrastructure.router.base import BaseRouter
+from application.router.base import BaseRouter
 
 from infrastructure.dao.currencies import CurrenciesDAO
-from infrastructure.http.response.http_response import HTTPResponse
-from infrastructure.http.request.http_request import HTTPRequest
-
+from application.http.request.http_request import HTTPRequest
 from infrastructure.dao.exchange_rates import ExchangeRatesDAO
 
-from infrastructure.http.response.exchange_rate_errors import ExchangeRateNotFoundError, ExchangeRateMissingError, RequiredFieldMissingError
-
-from infrastructure.http.response.base_success import SuccessResponse
 
 class ExchangeRateRouter(BaseRouter):
 

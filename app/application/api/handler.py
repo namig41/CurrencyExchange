@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Callable
 
@@ -10,9 +11,6 @@ from application.router.exchange_rate import ExchangeRateRouter
 from application.router.exchange import ExchangeRouter
 
 from application.http.request.http_request import HTTPRequest
-from application.http.response.http_response import HTTPResponse
-
-from application.http.response.common_error import NotFound
 
 class HTTPHandler(BaseHTTPRequestHandler):
 

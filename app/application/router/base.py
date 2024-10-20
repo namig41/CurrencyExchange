@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from http.client import HTTPResponse
 
-from infrastructure.http.request.http_request import HTTPRequest
-from infrastructure.http.response.http_response import HTTPResponse
+from application.http.request.http_request import HTTPRequest
 
+@dataclass
 class BaseRouter(ABC):
+    
+    prefix: str = field(default="/")
     
     @abstractmethod
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:

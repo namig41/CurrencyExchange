@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Iterable
 
 from domain.entities.currency import Currency
@@ -28,6 +29,14 @@ class SQLiteCurrenciesRepository(BaseCurrenciesRepository):
         
     async def get_currency_by_id(self, id: int) -> Currency | None:
         currency_data: dict = self.currencies_dao.find_by_id(id)
+        
+        if currency_data is None:
+            return None
+        
+        return convert_currency_document_to_entity(currency_data)
+    
+    async def get_currency_by_code(self, code: str) -> Currency | None:
+        currency_data: dict = self.currencies_dao.find_by_id(code=code)
         
         if currency_data is None:
             return None
@@ -70,13 +79,15 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         exchange_rate_data: dict = convert_exchange_rate_entity_to_document(exchange_rate)
         self.exchange_rates_dao.insert(exchange_rate_data)
-        
+
+@lru_cache        
 def sqlite_currencies_repository_factory() -> SQLiteCurrenciesRepository:
     database: BaseDatabase = sqlite_database_factory()
     currencies_dao = CurrenciesDAO(database=database)
     currencies_repository = SQLiteCurrenciesRepository(currencies_dao)
     return currencies_repository
     
+@lru_cache
 def sqlite_exchange_rates_repository_factory() -> SQLiteExchangeRatesRepository:
     database: BaseDatabase = sqlite_database_factory()
     exchange_rates_dao = ExchangeRatesDAO(database=database)

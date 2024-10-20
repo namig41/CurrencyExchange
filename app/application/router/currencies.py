@@ -1,54 +1,41 @@
+from dataclasses import dataclass, field
+from http.client import HTTPResponse
+from typing import Iterable
 from application.router.base import BaseRouter
 
-from infrastructure.http.request.http_request import HTTPRequest
-from infrastructure.http.response.http_response import HTTPResponse
+from application.http.request.http_request import HTTPRequest
 
+from application.schema.http.response_success import SuccessResponse
+from application.schema.router.currency import CreateNewCurrencySchema, CurrenciesDetailSchema
+from domain.entities.currency import Currency
+from domain.exceptions.base import ApplicationException
 from infrastructure.dao.currencies import CurrenciesDAO
 
-from infrastructure.http.response.currency_error import (CurrencyNotFoundError,
-                                    CurrencyAlreadyExistsError,
-                                                             RequiredFieldMissingError)
+from infrastructure.repositories.base import BaseCurrenciesRepository
+from infrastructure.repositories.sqlite import sqlite_currencies_repository_factory
 
-from infrastructure.http.response.base_success import SuccessResponse
-
-
+@dataclass
 class CurrenciesRouter(BaseRouter):
 
-    def __init__(self):
-        self.prefix = "currencies"
-        self.dao = CurrenciesDAO()
+    prefix: str = field(default="currencies")
+    currencies_repository: BaseCurrenciesRepository = field(default_factory=sqlite_currencies_repository_factory)
 
-    def handle_get(self, request: HTTPRequest) -> HTTPResponse:       
-        if len(request.parts) != 1:
-            return RequiredFieldMissingError()
-
-        currencies = self.dao.find_all()
-        return SuccessResponse(currencies)        
+    def handle_get(self, request: HTTPRequest) -> HTTPResponse:
+        try:
+            currencies: Iterable[Currency] = CurrenciesDetailSchema.parse_request(request, self.currencies_repository)    
+        except ApplicationException as exception:
+            return HTTPResponse(status_code=exception.code, data=exception.message)
+        
+        return SuccessResponse(data=currencies)        
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        if not request.body:
-            return CurrencyNotFoundError()
+        try:
+            currency: Currency = CreateNewCurrencySchema.parse_request(request, self.currencies_repository)    
+        except ApplicationException as exception:
+            return HTTPResponse(status_code=exception.code, data=exception.message)
         
-        required_fields = ["name", "code", "sign"]
-        missing_fields = [field for field in required_fields if field not in request.body]
+        return SuccessResponse(data=currency)    
 
-        if missing_fields:
-            return RequiredFieldMissingError()
-        
-        currency_data = {
-            "FullName": request.body["name"][0],
-            "Code": request.body["code"][0],
-            "Sign": request.body["sign"][0]
-        }
-
-        existing_currency = self.dao.find_by(code=currency_data["Code"])
-        if existing_currency:
-            return CurrencyAlreadyExistsError()
-        
-        self.dao.insert(currency_data)
-        currency = self.dao.find_by(code=currency_data["Code"])
-
-        return SuccessResponse(currency)
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
         pass

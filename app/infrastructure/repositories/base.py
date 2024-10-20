@@ -19,6 +19,10 @@ class BaseCurrenciesRepository(ABC):
     @abstractmethod
     async def get_currency_by_id(self, id: int) -> Currency | None:
         ...
+        
+    @abstractmethod
+    async def get_currency_by_code(self, code: str) -> Currency | None:
+        ...
      
     @abstractmethod
     async def add_currency(self, currency: Currency) -> None:
