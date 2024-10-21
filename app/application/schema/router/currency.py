@@ -2,11 +2,13 @@ from dataclasses import dataclass
 from typing import Iterable
 from application.exceptions.http.common import RequiredFieldException
 from application.exceptions.http.currency import CurrencyAlreadyExistsException, CurrencyNotFoundException
+from application.exceptions.http.exchange_rate import ExchangeRateMissingException
 from application.http.request.http_request import HTTPRequest
 from application.schema.router.base import BaseSchema
 from domain.entities.currency import Currency
+from domain.entities.exchange_rate import ExchangeRate
 from domain.exceptions.base import ApplicationException
-from infrastructure.repositories.base import BaseCurrenciesRepository
+from infrastructure.repositories.base import BaseCurrenciesRepository, BaseExchangeRatesRepository
 from infrastructure.repositories.converters import convert_currency_document_to_entity, convert_currency_entity_to_document
 
 
@@ -87,3 +89,7 @@ class CurrencyDetailSchema(BaseSchema):
             return convert_currency_document_to_entity(currency)
         except ApplicationException as exception:
             raise exception
+        
+    
+
+    

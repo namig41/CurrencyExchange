@@ -23,7 +23,7 @@ def run(
     try:
         web_server.serve_forever()
     except KeyboardInterrupt:
-        pass
+        ...
 
     web_server.server_close()
     

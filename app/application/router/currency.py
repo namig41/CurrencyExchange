@@ -23,7 +23,7 @@ class CurrencyRouter(BaseRouter):
         return SuccessResponse(data=currency) 
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        pass
+        ...
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
-        pass
+        ...

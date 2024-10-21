@@ -53,7 +53,7 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
     
     exchange_rates_dao: ExchangeRatesDAO
     
-    async def check_exchange_rate_exists_by_base_target_currency(
+    async def check_exchange_rate_exists_by_id(
         self,
         base_currency: Currency,
         target_currency: Currency

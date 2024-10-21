@@ -15,7 +15,6 @@ class CurrencyNotFoundException(NotFoundException):
     def message(self):
         return 'Currency not found'
 
-
 @dataclass
 class CurrencyAlreadyExistsException(ConflictException):
     

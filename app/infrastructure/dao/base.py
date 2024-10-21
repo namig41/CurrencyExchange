@@ -11,27 +11,27 @@ class BaseDAO(ABC):
     
     @abstractmethod
     def find_by_id(self, id: int):
-        pass
+        ...
 
     @abstractmethod
     def find_by(self, **kwargs) -> dict | None:
-        pass
+        ...
 
     @abstractmethod
     def find_all(self) -> list[dict[Any, Any]]:
-        pass
+        ...
 
     @abstractmethod
     def insert(self, data) -> None:
-        pass
+        ...
 
     @abstractmethod
     def update(self, data) -> None:
-        pass
+        ...
 
     @abstractmethod
     def delete(self, **kwargs) -> None:
-        pass
+        ...
 
 @dataclass
 class DAO(BaseDAO):

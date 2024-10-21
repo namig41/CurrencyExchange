@@ -38,4 +38,4 @@ class CurrenciesRouter(BaseRouter):
 
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
-        pass
+        ...
