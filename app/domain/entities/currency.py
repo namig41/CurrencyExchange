@@ -20,5 +20,5 @@ class Currency(BaseEntity):
     def __hash__(self):
         return hash(self.id)
     
-    def __eq__(self, other: 'Currency'):
+    def __eq__(self, other: 'Currency') -> bool:
         return self.code == other.code

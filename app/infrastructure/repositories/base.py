@@ -39,5 +39,9 @@ class BaseExchangeRatesRepository(ABC):
         ...
      
     @abstractmethod
+    async def get_exchange_rates(self) -> Iterable[ExchangeRate]:
+        ...
+        
+    @abstractmethod
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         ...

@@ -9,7 +9,7 @@ from infrastructure.dao.exchange_rates import ExchangeRatesDAO
 from infrastructure.database.base import BaseDatabase
 from infrastructure.database.sqlite import SQLiteDatabase, sqlite_database_factory
 from infrastructure.repositories.base import BaseCurrenciesRepository, BaseExchangeRatesRepository
-from infrastructure.repositories.converters import convert_currency_document_to_entity, convert_currency_entity_to_document, convert_exchange_rate_document_to_entity, convert_exchange_rate_entity_to_document
+from infrastructure.repositories.converters import convert_currency_document_to_entity, convert_currency_entity_to_document, convert_exchange_rate_document_to_entity, convert_exchange_rate_entity_to_document, convert_exchange_rates_document_to_entity
 
 
 @dataclass
@@ -68,7 +68,7 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
         target_currency: Currency
         ) -> ExchangeRate | None:
         
-        exchange_rate_data: ExchangeRate = self.exchange_rates_dao.find_by(BaseCurrencyId=base_currency.id,
+        exchange_rate_data: dict = self.exchange_rates_dao.find_by(BaseCurrencyId=base_currency.id,
                                                                       TargetCurrencyId=target_currency.id)
         
         if exchange_rate_data is None:
@@ -79,6 +79,10 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         exchange_rate_data: dict = convert_exchange_rate_entity_to_document(exchange_rate)
         self.exchange_rates_dao.insert(exchange_rate_data)
+        
+    async def get_exchange_rates(self) -> Iterable[ExchangeRate]:
+        exchange_rates_data = self.exchange_rates_dao.find_all()
+        return convert_exchange_rates_document_to_entity(exchange_rates_data)
 
 @lru_cache        
 def sqlite_currencies_repository_factory() -> SQLiteCurrenciesRepository:

@@ -11,7 +11,7 @@ def run(
     server_class: BaseServer = HTTPServer,
     handler: BaseHTTPRequestHandler = HTTPHandler,
     hostname: str = Settings.SERVER_HOST,
-    port: str = Settings.SERVER_PORT,
+    port: int = Settings.SERVER_PORT,
     logger: ILogger = create_logger_dependency()
     ):
     

@@ -33,6 +33,14 @@ class MemoryCurrenciesRepository(BaseCurrenciesRepository):
                 )
         except StopIteration:
             return False
+        
+    async def get_currency_by_code(self, code: str) -> Currency | None:
+        try:
+            return next(
+                    currency for currency in self._saved_currencies if currency.code == code
+                )
+        except StopIteration:
+            return False
      
     async def add_currency(self, currency: Currency) -> None:
         self._saved_currencies.add(currency)

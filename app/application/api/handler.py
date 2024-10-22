@@ -1,4 +1,3 @@
-from http.client import HTTPResponse
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Callable
 
@@ -11,6 +10,7 @@ from application.router.exchange_rate import ExchangeRateRouter
 from application.router.exchange import ExchangeRouter
 
 from application.http.request.http_request import HTTPRequest
+from application.schema.http.response import HTTPResponse
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
@@ -31,8 +31,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request = HTTPRequest(self.path)
         request.parse(self.headers, self.rfile)
 
-        uri: list = request.parts[0]
-        response = NotFound()
+        uri = request.parts[0]
+        response = HTTPResponse(404, 'Not found')
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_get(request)
@@ -45,7 +45,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request.parse(self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = NotFound()
+        response = HTTPResponse(404, 'Not found')
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_post(request)
@@ -58,7 +58,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request.parse(self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = NotFound()
+        response = HTTPResponse(404, 'Not found')
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_patch(request)

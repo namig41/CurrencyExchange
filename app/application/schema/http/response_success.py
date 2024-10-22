@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from http.client import HTTPResponse
 
+from application.schema.http.response import HTTPResponse
 
 @dataclass
 class SuccessResponse(HTTPResponse):

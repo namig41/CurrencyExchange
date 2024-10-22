@@ -4,7 +4,7 @@ from application.router.base import BaseRouter
 from application.http.request.http_request import HTTPRequest
 
 from application.schema.http.response_success import SuccessResponse
-from application.schema.router.exchange_rate import ExchageRatesDetailSchema
+from application.schema.router.exchange_rates import ExchageRatesDetailSchema
 from domain.exceptions.base import ApplicationException
 from infrastructure.dao.currencies import CurrenciesDAO
 
@@ -23,7 +23,6 @@ class ExchangeRatesRouter(BaseRouter):
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:
         try:
             exchange_rate = ExchageRatesDetailSchema.parse_request(request,
-                                                              self.currencies_repository,
                                                               self.exchange_rates_repository)    
         except ApplicationException as exception:
             return HTTPResponse(status_code=exception.code, data=exception.message)

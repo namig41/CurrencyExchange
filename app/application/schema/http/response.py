@@ -1,8 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class HTTPResponse:
     
     status_code: int
-    data: dict
+    data: dict = field(default=dict)

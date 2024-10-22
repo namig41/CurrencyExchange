@@ -34,4 +34,12 @@ async def test_add_exchange_rate_in_repository(
     
     exchange_rate_returned: ExchangeRate = await exchange_rates_sqlite_repository.get_exchange_rate_by_id(base_currency, target_currency)
     
-    assert exchange_rate_returned == exchange_rate     
+    assert exchange_rate_returned == exchange_rate
+    
+@pytest.mark.asyncio
+async def test_get_exchange_rates_in_repository(
+    exchange_rates_sqlite_repository: BaseExchangeRatesRepository):
+    
+    exchange_rate_returned: Iterable[ExchangeRate] = await exchange_rates_sqlite_repository.get_exchange_rates()
+    
+    assert len(exchange_rate_returned) == 3

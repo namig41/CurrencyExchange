@@ -10,7 +10,7 @@ class BaseDAO(ABC):
     """
     
     @abstractmethod
-    def find_by_id(self, id: int):
+    def find_by_id(self, id: int) -> dict | None:
         ...
 
     @abstractmethod

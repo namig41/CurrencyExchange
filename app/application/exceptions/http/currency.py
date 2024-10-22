@@ -2,20 +2,20 @@ from dataclasses import dataclass
 
 from application.exceptions.http.common import BadRequestException, ConflictException, NotFoundException
 
-@dataclass
+@dataclass(eq=False)
 class CurrencyCodeMissingException(BadRequestException):
     
     @property
     def message(self):
         return 'Bad request'
 
-@dataclass
+@dataclass(eq=False)
 class CurrencyNotFoundException(NotFoundException):        
     @property
     def message(self):
         return 'Currency not found'
 
-@dataclass
+@dataclass(eq=False)
 class CurrencyAlreadyExistsException(ConflictException):
     
     @property
