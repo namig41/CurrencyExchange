@@ -22,3 +22,6 @@ class ExchangeRate(BaseEntity):
         if self.base_currency == self.target_currency:
             raise EqualCurrencyException()
         
+    def __eq__(self, other: 'ExchangeRate') -> bool:
+        return self.base_currency == other.base_currency and self.target_currency == other.target_currency
+        

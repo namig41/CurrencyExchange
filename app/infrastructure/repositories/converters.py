@@ -1,6 +1,8 @@
+from decimal import Decimal
 from typing import Iterable
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
+from domain.value_objects.rate import Rate
 
 
 def convert_currency_entity_to_document(currency: Currency) -> dict:
@@ -21,15 +23,27 @@ def convert_currency_document_to_entity(currency_data: dict) -> Currency:
     
 def convert_exchange_rate_entity_to_document(exchange_rate: ExchangeRate) -> dict:
     return {
-        'id': exchange_rate.id,
-        'basecurrencyid': exchange_rate.base_currency.id,
-        'targetcurrencyid': exchange_rate.target_currency.id,
-        'rate': exchange_rate.rate,
+        "id": exchange_rate.id,
+        "baseCurrency": {
+            "id": exchange_rate.base_currency.id,
+            "name": exchange_rate.base_currency.fullname,
+            "code": exchange_rate.base_currency.code,
+            "sign": exchange_rate.base_currency.sign
+        },
+        "targetCurrency": {
+            "id": exchange_rate.target_currency.id,
+            "name": exchange_rate.target_currency.fullname,
+            "code": exchange_rate.target_currency.code,
+            "sign": exchange_rate.target_currency.sign
+        },
+        "rate": float(exchange_rate.rate.value),
     }
     
 def convert_exchange_rate_document_to_entity(exchange_rate_data: dict,
                                              base_currency: Currency, 
                                              target_currency: Currency) -> ExchangeRate:
+    
+    
     return ExchangeRate(
         id=exchange_rate_data['id'],
         base_currency=base_currency,
@@ -56,32 +70,14 @@ def convert_exchange_rates_document_to_entity(exchange_rates_data: list[dict]) -
         exchange_rates.append(ExchangeRate(id=exchange_rate_data['id'],
                                            base_currency=base_currency,
                                            target_currency=target_currency,
-                                           rate=exchange_rate_data['rate']))
+                                           rate=Rate(Decimal(exchange_rate_data['rate']))))
         
     return exchange_rates
 
 
 def convert_exchange_rates_entity_to_document(exchange_rates: list[ExchangeRate]) -> list[dict]:
-    
-    exchange_rates_data: list[dict] = []
-    
-    for exchange_rate in exchange_rates:
-        exchange_rates_data.append({
-                "id": exchange_rate.id,
-                "baseCurrency": {
-                    "id": exchange_rate.base_currency.id,
-                    "name": exchange_rate.base_currency.fullname,
-                    "code": exchange_rate.base_currency.code,
-                    "sign": exchange_rate.base_currency.sign
-                },
-                "targetCurrency": {
-                    "id": exchange_rate.target_currency.id,
-                    "name": exchange_rate.target_currency.fullname,
-                    "code": exchange_rate.target_currency.code,
-                    "sign": exchange_rate.target_currency.sign
-                },
-                "rate": exchange_rate.rate.value,
-            }
-        )
-        
-    return exchange_rates_data
+            
+    return [
+        convert_exchange_rate_entity_to_document(exchange_rate)
+        for exchange_rate in exchange_rates
+    ]

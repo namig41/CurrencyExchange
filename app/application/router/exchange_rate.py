@@ -38,7 +38,6 @@ class ExchangeRateRouter(BaseRouter):
                                                               self.exchange_rates_repository)    
         except ApplicationException as exception:
             return HTTPResponse(status_code=exception.code, data=exception.message)
-        
         return SuccessResponse(data=exchange_rate) 
         
         

@@ -26,7 +26,7 @@ class ExchageRatesDetailSchema(BaseSchema):
     ) -> Iterable[ExchangeRate]:
         
         try:
-            ExchageRateDetailSchema.check_request(request)
+            ExchageRatesDetailSchema.check_request(request)
             exchange_rates: list[ExchangeRate] = exchange_rates_repository.get_exchange_rates()
             return convert_exchange_rates_entity_to_document(exchange_rates)
         except ApplicationException as exception:
@@ -53,7 +53,7 @@ class ExchageRatesCreateSchema(BaseSchema):
             
             base_currency = currencies_repository.get_currency_by_code(code=base_currency_code)
             target_currency = currencies_repository.get_currency_by_code(code=target_currency_code)
-            rate = Rate(request.body["rate"][0])
+            rate = Rate(Decimal(request.body["rate"][0]))
 
             exchange_rate = ExchangeRate(base_currency, target_currency, rate)
     

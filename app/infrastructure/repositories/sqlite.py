@@ -17,17 +17,17 @@ class SQLiteCurrenciesRepository(BaseCurrenciesRepository):
     
     currencies_dao: CurrenciesDAO
     
-    async def check_currency_exists_by_id(self, id: int) -> bool:
+    def check_currency_exists_by_id(self, id: int) -> bool:
         currency: Currency = self.currencies_dao.find_by_id(id)
         return currency is not None
     
-    async def get_currencies(self) -> Iterable[Currency]:
+    def get_currencies(self) -> Iterable[Currency]:
         currenices: list[Currency] = [convert_currency_document_to_entity(currency_data)
                                       for currency_data in self.currencies_dao.find_all()]
         return currenices
         
         
-    async def get_currency_by_id(self, id: int) -> Currency | None:
+    def get_currency_by_id(self, id: int) -> Currency | None:
         currency_data: dict = self.currencies_dao.find_by_id(id)
         
         if currency_data is None:
@@ -35,15 +35,15 @@ class SQLiteCurrenciesRepository(BaseCurrenciesRepository):
         
         return convert_currency_document_to_entity(currency_data)
     
-    async def get_currency_by_code(self, code: str) -> Currency | None:
-        currency_data: dict = self.currencies_dao.find_by_id(code=code)
+    def get_currency_by_code(self, code: str) -> Currency | None:
+        currency_data: dict = self.currencies_dao.find_by(code=code)
         
         if currency_data is None:
             return None
         
         return convert_currency_document_to_entity(currency_data)
      
-    async def add_currency(self, currency: Currency) -> None:
+    def add_currency(self, currency: Currency) -> None:
         currecny_data: dict = convert_currency_entity_to_document(currency)
         self.currencies_dao.insert(currecny_data)
         
@@ -53,16 +53,15 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
     
     exchange_rates_dao: ExchangeRatesDAO
     
-    async def check_exchange_rate_exists_by_id(
+    def check_exchange_rate_exists_by_id(
         self,
         base_currency: Currency,
         target_currency: Currency
         ) -> bool:
-        exchange_rate_data: ExchangeRate = self.exchange_rates_dao.find_by(BaseCurrencyId=base_currency.id,
-                                                                      TargetCurrencyId=target_currency.id)
-        return exchange_rate_data is not None
 
-    async def get_exchange_rate_by_id(
+        return self.get_exchange_rate_by_id(base_currency, target_currency) is not None
+
+    def get_exchange_rate_by_id(
         self,
         base_currency: Currency,
         target_currency: Currency
@@ -76,14 +75,22 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
         
         return convert_exchange_rate_document_to_entity(exchange_rate_data, base_currency, target_currency)
      
-    async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
+    def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         exchange_rate_data: dict = convert_exchange_rate_entity_to_document(exchange_rate)
         self.exchange_rates_dao.insert(exchange_rate_data)
         
-    async def get_exchange_rates(self) -> Iterable[ExchangeRate]:
+    def get_exchange_rates(self) -> Iterable[ExchangeRate]:
         exchange_rates_data = self.exchange_rates_dao.find_all()
         return convert_exchange_rates_document_to_entity(exchange_rates_data)
-
+    
+    def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
+        
+        self.exchange_rates_dao.update(
+            {'rate': exchange_rate.rate.value},
+            BaseCurrencyId=exchange_rate.base_currency.id,
+            TargetCurrencyId=exchange_rate.target_currency.id
+        )
+        
 @lru_cache        
 def sqlite_currencies_repository_factory() -> SQLiteCurrenciesRepository:
     database: BaseDatabase = sqlite_database_factory()
