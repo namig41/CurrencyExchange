@@ -1,14 +1,17 @@
 services:
-  currency_exchange:
+  main-app:
     container_name: main-app
     build: ..
-    command: 'python3 app/application/api/main.py --bind 0.0.0.0'
+    command: 'python3 application/api/main.py --bind 0.0.0.0'
     ports:
       - '8000:8000'
     volumes:
       - ../app/:/app
+      - .env:/app.env
     env_file:
       - ../.env
+    environment:
+      - PYTHONPATH=/app
     networks:
       - backend
 

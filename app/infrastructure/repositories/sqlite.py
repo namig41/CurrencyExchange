@@ -77,6 +77,12 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
      
     def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         exchange_rate_data: dict = convert_exchange_rate_entity_to_document(exchange_rate)
+        
+        exchange_rate_data['baseCurrencyId'] = exchange_rate_data['baseCurrency']['id']
+        exchange_rate_data['targetCurrencyId'] = exchange_rate_data['targetCurrency']['id']
+        del exchange_rate_data['baseCurrency']
+        del exchange_rate_data['targetCurrency']
+        
         self.exchange_rates_dao.insert(exchange_rate_data)
         
     def get_exchange_rates(self) -> Iterable[ExchangeRate]:

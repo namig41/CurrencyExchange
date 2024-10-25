@@ -3,7 +3,6 @@ import pytest
 from domain.entities.currency import Currency
 from infrastructure.repositories.base import BaseCurrenciesRepository
 
-@pytest.mark.asyncio
 def test_add_currency_in_repository(currency_memory_repository: BaseCurrenciesRepository):
     
     currency: Currency  = Currency('USD', 'United States dollar', '$')

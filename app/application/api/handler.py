@@ -32,7 +32,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request.parse(self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, 'Not found')
+        response = HTTPResponse(404, data='Not found')
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_get(request)
@@ -45,7 +45,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request.parse(self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, 'Not found')        
+        response = HTTPResponse(404, data='Not found')       
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_post(request)
@@ -58,7 +58,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         request.parse(self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, 'Not found')
+        response = HTTPResponse(404, data='Not found')
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_patch(request)

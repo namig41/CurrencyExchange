@@ -23,10 +23,6 @@ app-remove:
 app-logs:
 	${DC} -f ${APP_FILE} logs -f
 
-.PHONY: logs
-storage-logs:
-	${DC} -f ${STORAGE_FILE} logs -f
-
 .PHONY: shell
 shell:
-	${DC} -f ${APP_FILE} exec ${SERVICE_NAME} /bin/sh
+	${DC} -f ${APP_FILE} exec ${SERVICE_NAME} /bin/bash
