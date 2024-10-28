@@ -40,9 +40,9 @@ class SQLiteDatabase(BaseDatabase):
     def close(self):
         self.connection.close()
 
-    def execute(self, query: str):
+    def execute(self, query: str, *args):
         try:
-            self.cursor = self.cursor.execute(query)
+            self.cursor = self.cursor.execute(query, args)
             self.logger.info('Запрос успешно выполнен')
             return self.cursor
         except ApplicationException as exception:
@@ -63,4 +63,4 @@ def sqlite_database_factory() -> BaseDatabase:
         database.init(Settings.DB_INIT_PATH)
         return database
     except ApplicationException as exception:
-        raise ApplicationException
+        raise exception

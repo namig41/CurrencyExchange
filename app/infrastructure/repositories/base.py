@@ -38,6 +38,10 @@ class BaseExchangeRatesRepository(ABC):
     @abstractmethod
     def get_exchange_rate_by_id(self, base_currency: Currency, target_currency: Currency) -> ExchangeRate | None:
         ...
+    
+    @abstractmethod
+    def get_exchange_rate_by_codes(self, base_code: str, target_code: str) -> ExchangeRate | None:
+        ...
      
     @abstractmethod
     def get_exchange_rates(self) -> Iterable[ExchangeRate]:

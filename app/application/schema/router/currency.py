@@ -6,7 +6,7 @@ from application.schema.router.base import BaseSchema
 from domain.entities.currency import Currency
 from domain.exceptions.base import ApplicationException
 from infrastructure.repositories.base import BaseCurrenciesRepository
-from infrastructure.repositories.converters import convert_currency_document_to_entity
+from infrastructure.repositories.converters import convert_currency_document_to_entity, convert_currency_entity_to_document
   
 @dataclass
 class CurrencyDetailSchema(BaseSchema):
@@ -23,7 +23,7 @@ class CurrencyDetailSchema(BaseSchema):
             currency_code = request.parts[1]
             currency: Currency = currencies_repository.get_currency_by_code(currency_code)
             
-            return convert_currency_document_to_entity(currency)
+            return convert_currency_entity_to_document(currency)
         except ApplicationException as exception:
             raise exception
         

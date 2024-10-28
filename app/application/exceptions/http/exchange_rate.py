@@ -20,4 +20,11 @@ class ExchangeRateNotFoundException(NotFoundException):
     @property
     def message(self):
         return f'Exchange rate for pair not found'
+    
+@dataclass(eq=False)
+class ExchangeRateExisistException(NotFoundException):
+    
+    @property
+    def message(self):
+        return f'Exchange rate for pair exists'
    

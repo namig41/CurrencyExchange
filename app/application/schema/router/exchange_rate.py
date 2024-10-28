@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Iterable
-from application.exceptions.http.exchange_rate import ExchangeRateMissingException
+from application.exceptions.http.exchange_rate import ExchangeRateMissingException, ExchangeRateNotFoundException
 from application.http.request.http_request import HTTPRequest
 from application.schema.router.base import BaseSchema
-from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
 from domain.exceptions.base import ApplicationException
 from domain.value_objects.rate import Rate
@@ -20,7 +18,6 @@ class ExchageRateDetailSchema(BaseSchema):
     
     def parse_request(
         request: HTTPRequest,
-        currencies_repository: BaseCurrenciesRepository,
         exchange_rates_repository: BaseExchangeRatesRepository
     ) -> ExchangeRate:
         
@@ -28,13 +25,13 @@ class ExchageRateDetailSchema(BaseSchema):
             ExchageRateDetailSchema.check_request(request)
             
             currency_pair = request.parts[1]
-            base_currency_code, target_currency_code = currency_pair[:3], currency_pair[3:]
+            base_code, target_code = currency_pair[:3], currency_pair[3:]
                         
-            base_currency = currencies_repository.get_currency_by_code(code=base_currency_code)
-            target_currency = currencies_repository.get_currency_by_code(code=target_currency_code)
+            exchange_rate: ExchangeRate = exchange_rates_repository.get_exchange_rate_by_codes(base_code, target_code)
                         
-            exchange_rate: ExchangeRate = exchange_rates_repository.get_exchange_rate_by_id(base_currency, target_currency)
-            
+            if exchange_rate is None:
+                raise ExchangeRateNotFoundException()
+                        
             return convert_exchange_rate_entity_to_document(exchange_rate)
         except ApplicationException as exception:
             raise exception

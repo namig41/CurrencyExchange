@@ -50,19 +50,30 @@ class CreateNewCurrencySchema(BaseSchema):
             CreateNewCurrencySchema.check_request(request)
             
             currency_data = {
-                "id": request.body["id"][0],
                 "fullname": request.body["name"][0],
                 "code": request.body["code"][0],
                 "sign": request.body["sign"][0]
             }
             
-            currency: Currency = convert_currency_document_to_entity(currency_data) 
+            # currency: Currency = convert_currency_document_to_entity(currency_data)
+
+            # TODO: необходимо вынести в конвертацию             
+            currency: Currency = Currency(
+                code=currency_data['code'],
+                fullname=currency_data['fullname'],
+                sign=currency_data['sign'],
+            )
+            
+            # TODO: Оптимизировать количество запросов
                     
             if currencies_repository.get_currency_by_code(currency_data["code"]):
                 raise CurrencyAlreadyExistsException()
                 
             currencies_repository.add_currency(currency)
-            return currency_data
+            
+            inserted_currency: Currency = currencies_repository.get_currency_by_code(currency_data["code"])
+            
+            return convert_currency_entity_to_document(inserted_currency)
             
         except ApplicationException as exception:
             raise exception

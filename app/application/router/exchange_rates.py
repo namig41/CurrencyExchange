@@ -4,7 +4,7 @@ from application.http.request.http_request import HTTPRequest
 
 from application.schema.http.response import HTTPResponse
 from application.schema.http.response_success import SuccessResponse
-from application.schema.router.exchange_rates import ExchageRatesDetailSchema
+from application.schema.router.exchange_rates import ExchageRatesCreateSchema, ExchageRatesDetailSchema
 from domain.exceptions.base import ApplicationException
 
 from infrastructure.repositories.base import BaseCurrenciesRepository, BaseExchangeRatesRepository
@@ -27,8 +27,13 @@ class ExchangeRatesRouter(BaseRouter):
         return SuccessResponse(data=exchange_rate) 
         
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        # TODO: Добавить новый обменник
-        ...        
+        try:
+            exchange_rate = ExchageRatesCreateSchema.parse_request(request,
+                                                                   self.currencies_repository,
+                                                                   self.exchange_rates_repository)    
+        except ApplicationException as exception:
+            return HTTPResponse(status_code=exception.code, data=exception.message)
+        return SuccessResponse(data=exchange_rate)         
 
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:

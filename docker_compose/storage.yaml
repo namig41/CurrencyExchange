@@ -1,0 +1,15 @@
+services:
+  currency_exchange:
+    container_name: currency_exchange
+    build: ..
+    command: python3 app/main.py --bind 0.0.0.0 
+    ports:
+      - '8000:8000'
+    volumes:
+      - ..:/currency_exchange
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

@@ -15,7 +15,7 @@ class BaseDatabase(ABC):
         ...
 
     @abstractmethod
-    def execute(self, query: str):
+    def execute(self, query: str, *args):
         ...
 
     @abstractmethod

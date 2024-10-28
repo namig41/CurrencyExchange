@@ -48,31 +48,28 @@ def convert_exchange_rate_document_to_entity(exchange_rate_data: dict,
         id=exchange_rate_data['id'],
         base_currency=base_currency,
         target_currency=target_currency,
-        rate=exchange_rate_data['rate'],
+        rate=Rate(Decimal(exchange_rate_data['rate'])),
     )
     
+def convert_exchange_rate_all_document_to_entity(exchange_rate_data: dict) -> ExchangeRate:
     
-def convert_exchange_rates_document_to_entity(exchange_rates_data: list[dict]) -> Iterable[ExchangeRate]:
-    
-    exchange_rates: list[ExchangeRate] = []
-    
-    for exchange_rate_data in exchange_rates_data:
-        base_currency = Currency(id=exchange_rate_data['baseid'],
-                               code=exchange_rate_data['basecode'],
-                               fullname=exchange_rate_data['basefullname'],
-                               sign=exchange_rate_data['basesign'])
-         
-        target_currency = Currency(id=exchange_rate_data['targetid'],
-                                code=exchange_rate_data['targetcode'],
-                                fullname=exchange_rate_data['targetfullname'],
-                                sign=exchange_rate_data['targetsign'])
+    base_currency = Currency(id=exchange_rate_data['baseid'],
+                                code=exchange_rate_data['basecode'],
+                                fullname=exchange_rate_data['basefullname'],
+                                sign=exchange_rate_data['basesign'])
         
-        exchange_rates.append(ExchangeRate(id=exchange_rate_data['id'],
-                                           base_currency=base_currency,
-                                           target_currency=target_currency,
-                                           rate=Rate(Decimal(exchange_rate_data['rate']))))
-        
-    return exchange_rates
+    target_currency = Currency(id=exchange_rate_data['targetid'],
+                            code=exchange_rate_data['targetcode'],
+                            fullname=exchange_rate_data['targetfullname'],
+                            sign=exchange_rate_data['targetsign'])
+    
+    return convert_exchange_rate_document_to_entity(exchange_rate_data, base_currency, target_currency)
+    
+def convert_exchange_rates_document_to_entity(exchange_rates_data: list[dict]) -> Iterable[ExchangeRate]:     
+    return [
+        convert_exchange_rate_all_document_to_entity(exchange_rate_data)
+        for exchange_rate_data in exchange_rates_data
+    ]
 
 
 def convert_exchange_rates_entity_to_document(exchange_rates: list[ExchangeRate]) -> list[dict]:
