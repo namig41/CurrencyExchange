@@ -2,13 +2,6 @@ from dataclasses import dataclass
 from application.exceptions.http.common import BadRequestException, NotFoundException, RequiredFieldException
 
 @dataclass(eq=False)
-class ExchangeNotFoundException(NotFoundException):
-
-    @property
-    def message(self):
-        return 'Exchange rate not found'
-    
-@dataclass(eq=False)
 class ExchangeRateMissingException(RequiredFieldException):
     @property
     def message(self):

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Iterable
 from application.exceptions.http.common import RequiredFieldException
 from application.exceptions.http.currency import CurrencyAlreadyExistsException, CurrencyNotFoundException
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 from application.schema.router.base import BaseSchema
 from domain.entities.currency import Currency
 from domain.exceptions.base import ApplicationException

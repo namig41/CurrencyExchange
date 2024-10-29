@@ -5,7 +5,7 @@ from typing import Iterable
 from application.exceptions.http.common import RequiredFieldException
 from application.exceptions.http.currency import CurrencyNotFoundException
 from application.exceptions.http.exchange_rate import ExchangeRateExisistException, ExchangeRateMissingException
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 from application.schema.router.base import BaseSchema
 from application.schema.router.exchange_rate import ExchageRateDetailSchema
 from domain.entities.exchange_rate import ExchangeRate

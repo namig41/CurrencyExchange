@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 from application.exceptions.http.exchange_rate import ExchangeRateMissingException, ExchangeRateNotFoundException
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 from application.schema.router.base import BaseSchema
 from domain.entities.exchange_rate import ExchangeRate
 from domain.exceptions.base import ApplicationException

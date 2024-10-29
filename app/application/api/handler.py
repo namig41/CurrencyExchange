@@ -1,26 +1,33 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from typing import Callable
+from dataclasses import dataclass, field
+from http.server import BaseHTTPRequestHandler
 
 import json
 
+from application.http.request.parse import ParseHTTPRequestStrategy, ParseRequest
+from application.router.base import BaseRouter
 from application.router.currencies import CurrenciesRouter
 from application.router.currency import CurrencyRouter
 from application.router.exchange_rates import ExchangeRatesRouter
 from application.router.exchange_rate import ExchangeRateRouter
 from application.router.exchange import ExchangeRouter
 
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 from application.schema.http.response import HTTPResponse
+from application.schema.http.response_common import NotFoundResponse
 
-class HTTPHandler(BaseHTTPRequestHandler):
 
-    routers = [
-        CurrenciesRouter(),
-        CurrencyRouter(),
-        ExchangeRatesRouter(),
-        ExchangeRateRouter(),
-        ExchangeRouter()
-    ]
+class HTTPHandlerConfigMixin:
+    routers: list[BaseRouter] = [
+            CurrenciesRouter(),
+            CurrencyRouter(),
+            ExchangeRatesRouter(),
+            ExchangeRateRouter(),
+            ExchangeRouter()
+        ]
+    
+    parse_strategy: ParseHTTPRequestStrategy = ParseRequest()
+    
+class HTTPHandler(HTTPHandlerConfigMixin, BaseHTTPRequestHandler):
 
     def _set_headers(self, status_code=200, content_type='text/html'):
         self.send_response(status_code)
@@ -28,11 +35,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        request = HTTPRequest(self.path)
-        request.parse(self.headers, self.rfile)
+        request = self.parse_strategy.parse(self.path, self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, data='Not found')
+        response = NotFoundResponse()
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_get(request)
@@ -41,11 +47,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.do_response(response)
 
     def do_POST(self):
-        request = HTTPRequest(self.path)
-        request.parse(self.headers, self.rfile)
+        request = self.parse_strategy.parse(self.path, self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, data='Not found')       
+        response = NotFoundResponse()     
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_post(request)
@@ -54,11 +59,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.do_response(response)
 
     def do_PATCH(self):
-        request = HTTPRequest(self.path)
-        request.parse(self.headers, self.rfile)
+        request = self.parse_strategy.parse(self.path, self.headers, self.rfile)
 
         uri = request.parts[0]
-        response = HTTPResponse(404, data='Not found')
+        response = NotFoundResponse()
         for router in self.routers:
             if uri == router.prefix:
                 response = router.handle_patch(request)

@@ -2,10 +2,10 @@ from dataclasses import dataclass, field
 from typing import Iterable
 from application.router.base import BaseRouter
 
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 
 from application.schema.http.response import HTTPResponse
-from application.schema.http.response_success import SuccessResponse
+from application.schema.http.response_common import SuccessResponse
 from application.schema.router.currencies import CurrenciesDetailSchema, CreateNewCurrencySchema
 from domain.entities.currency import Currency
 from domain.exceptions.base import ApplicationException

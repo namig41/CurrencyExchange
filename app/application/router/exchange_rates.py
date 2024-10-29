@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from application.router.base import BaseRouter
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 
 from application.schema.http.response import HTTPResponse
-from application.schema.http.response_success import SuccessResponse
+from application.schema.http.response_common import SuccessResponse
 from application.schema.router.exchange_rates import ExchageRatesCreateSchema, ExchageRatesDetailSchema
 from domain.exceptions.base import ApplicationException
 

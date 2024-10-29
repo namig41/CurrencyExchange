@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from http.client import HTTPResponse
 from application.router.base import BaseRouter
-from application.http.request.http_request import HTTPRequest
-from application.schema.http.response_success import SuccessResponse
+from application.schema.http.request import HTTPRequest
+from application.schema.http.response_common import SuccessResponse
 from application.schema.router.currency import CurrencyDetailSchema
 from domain.exceptions.base import ApplicationException
 from infrastructure.dao.currencies import CurrenciesDAO

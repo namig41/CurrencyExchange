@@ -78,3 +78,11 @@ def convert_exchange_rates_entity_to_document(exchange_rates: list[ExchangeRate]
         convert_exchange_rate_entity_to_document(exchange_rate)
         for exchange_rate in exchange_rates
     ]
+    
+def convert_exchange_entity_to_document(exchange_rate: ExchangeRate, amount: float, converted_amount: float) -> dict:
+            
+    exchange_data = convert_exchange_rate_entity_to_document(exchange_rate)
+    exchange_data['amount'] = amount
+    exchange_data['convertedAmount'] = converted_amount
+    
+    return exchange_data

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from http.client import HTTPResponse
 
-from application.http.request.http_request import HTTPRequest
+from application.schema.http.request import HTTPRequest
 
 @dataclass
 class BaseRouter(ABC):

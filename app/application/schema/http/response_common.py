@@ -6,3 +6,8 @@ from application.schema.http.response import HTTPResponse
 class SuccessResponse(HTTPResponse):
     status_code: int = 200
     data: dict
+
+@dataclass
+class NotFoundResponse(HTTPResponse):
+    status_code: int = 404
+    data: dict = field(default_factory=lambda: {'message': 'Not Found'})
