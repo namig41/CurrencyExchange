@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from application.schema.http.response import HTTPResponse
-from application.schema.http.response_common import SuccessResponse
+from application.schema.http.response_common import NotFoundResponse, SuccessResponse
 from application.schema.router.exchange import ExchageConvertSchema
 from domain.exceptions.base import ApplicationException
 from infrastructure.dao.exchange_rates import ExchangeRatesDAO
@@ -26,7 +26,7 @@ class ExchangeRouter(BaseRouter):
         return SuccessResponse(data=exchange_rate) 
     
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        ...
+        return NotFoundResponse()
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
-        ...
+        return NotFoundResponse()

@@ -1,13 +1,17 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-from domain.exceptions.rate import RateIsNegativeException
+from domain.exceptions.code import CodeIsIvalideException
+from domain.value_objects.base import BaseValue
 
 
 @dataclass(frozen=True)
-class Code:
+class Code(BaseValue[str]):
     value: str
     
     def validate(self):
         if len(self.value) != 3:
-            raise RateIsNegativeException()
+            raise CodeIsIvalideException()
+    
+    def as_generic_type(self) -> str:
+        return self.value

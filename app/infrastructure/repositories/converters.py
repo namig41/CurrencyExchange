@@ -24,19 +24,9 @@ def convert_currency_document_to_entity(currency_data: dict) -> Currency:
 def convert_exchange_rate_entity_to_document(exchange_rate: ExchangeRate) -> dict:
     return {
         "id": exchange_rate.id,
-        "baseCurrency": {
-            "id": exchange_rate.base_currency.id,
-            "name": exchange_rate.base_currency.fullname,
-            "code": exchange_rate.base_currency.code,
-            "sign": exchange_rate.base_currency.sign
-        },
-        "targetCurrency": {
-            "id": exchange_rate.target_currency.id,
-            "name": exchange_rate.target_currency.fullname,
-            "code": exchange_rate.target_currency.code,
-            "sign": exchange_rate.target_currency.sign
-        },
-        "rate": float(exchange_rate.rate.value),
+        "baseCurrency": convert_currency_entity_to_document(exchange_rate.base_currency),
+        "targetCurrency": convert_currency_entity_to_document(exchange_rate.target_currency),
+        "rate": exchange_rate.rate.as_generic_type(),
     }
     
 def convert_exchange_rate_document_to_entity(exchange_rate_data: dict,

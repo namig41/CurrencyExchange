@@ -13,6 +13,7 @@ class BaseValue(ABC, Generic[VT]):
     @abstractmethod
     def validate(self):
         ...
-
-        
     
+    @abstractmethod
+    def as_generic_type(self) -> VT:
+        ...

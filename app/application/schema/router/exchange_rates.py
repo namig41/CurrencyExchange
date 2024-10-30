@@ -20,7 +20,7 @@ class ExchageRatesDetailSchema(BaseSchema):
     
     def check_request(request: HTTPRequest):
         if len(request.parts) != 1:
-            return ExchangeRateMissingException()
+            raise ExchangeRateMissingException()
     
     def parse_request(
         request: HTTPRequest,
@@ -75,6 +75,7 @@ class ExchageRatesCreateSchema(BaseSchema):
             
             if exchange_rates_repository.get_exchange_rate_by_codes(base_currency.code, target_currency.code):
                 raise ExchangeRateExisistException()
+            
     
             exchange_rates_repository.add_exchange_rate(exchange_rate)
             

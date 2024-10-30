@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from application.router.base import BaseRouter
 from application.schema.http.request import HTTPRequest
 from application.schema.http.response import HTTPResponse
-from application.schema.http.response_common import SuccessResponse
+from application.schema.http.response_common import NotFoundResponse, SuccessResponse
 from application.schema.router.currency import CurrencyDetailSchema
 from domain.exceptions.base import ApplicationException
 from infrastructure.dao.currencies import CurrenciesDAO
@@ -23,7 +23,7 @@ class CurrencyRouter(BaseRouter):
         return SuccessResponse(data=currency) 
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
-        ...
+        return NotFoundResponse()
 
     def handle_patch(self, request: HTTPRequest) -> HTTPResponse:
-        ...
+        return NotFoundResponse()
