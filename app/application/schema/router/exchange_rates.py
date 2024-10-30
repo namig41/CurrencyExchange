@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Iterable
 
-from application.exceptions.http.common import RequiredFieldException
+from application.exceptions.http.common import RequiredFieldMissingException
 from application.exceptions.http.currency import CurrencyNotFoundException
 from application.exceptions.http.exchange_rate import ExchangeRateExisistException, ExchangeRateMissingException
 from application.schema.http.request import HTTPRequest
@@ -45,7 +45,7 @@ class ExchageRatesCreateSchema(BaseSchema):
         missing_fields = [field for field in required_fields if field not in request.body]
 
         if missing_fields:
-            raise RequiredFieldException()
+            raise RequiredFieldMissingException()
     
     def parse_request(
         request: HTTPRequest,

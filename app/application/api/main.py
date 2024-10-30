@@ -13,7 +13,7 @@ def run(
     hostname: str = Settings.SERVER_HOST,
     port: int = Settings.SERVER_PORT,
     logger: ILogger = create_logger_dependency()
-    ):
+):
     
     server_address = (hostname, port)
     web_server = server_class(server_address, handler)

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Iterable
-from application.exceptions.http.common import RequiredFieldException
+from application.exceptions.http.common import RequiredFieldMissingException
 from application.exceptions.http.currency import CurrencyAlreadyExistsException, CurrencyNotFoundException
 from application.schema.http.request import HTTPRequest
 from application.schema.router.base import BaseSchema
@@ -15,7 +15,7 @@ class CurrenciesDetailSchema(BaseSchema):
     
     def check_request(request: HTTPRequest):
         if len(request.parts) != 1:
-            raise RequiredFieldException()
+            raise RequiredFieldMissingException()
     
     def parse_request(request: HTTPRequest, currencies_repository: BaseCurrenciesRepository) -> Iterable[Currency]:
         
@@ -35,13 +35,13 @@ class CreateNewCurrencySchema(BaseSchema):
     
     def check_request(request: HTTPRequest):
         if not request.body:
-            raise RequiredFieldException()
+            raise RequiredFieldMissingException()
         
         required_fields = ["name", "code", "sign"]
         missing_fields = [field for field in required_fields if field not in request.body]
 
         if missing_fields:
-            raise RequiredFieldException()
+            raise RequiredFieldMissingException()
         
     
     def parse_request(request: HTTPRequest, currencies_repository: BaseCurrenciesRepository) -> Currency:

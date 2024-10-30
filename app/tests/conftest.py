@@ -1,6 +1,9 @@
+from http.server import HTTPServer
+from threading import Thread
 import pytest
 from pytest_asyncio import fixture
 
+from application.api.handler import HTTPHandler
 from infrastructure.repositories.base import BaseCurrenciesRepository, BaseExchangeRatesRepository
 from infrastructure.repositories.memory import MemoryCurrenciesRepository
 from infrastructure.repositories.sqlite import sqlite_currencies_repository_factory, sqlite_exchange_rates_repository_factory
@@ -17,3 +20,19 @@ def currencies_sqlite_repository() -> BaseCurrenciesRepository:
 @fixture
 def exchange_rates_sqlite_repository() -> BaseExchangeRatesRepository:
     return sqlite_exchange_rates_repository_factory()
+
+
+@pytest.fixture(scope="module")
+def http_server():
+    server_address = ('localhost', 8000)
+    httpd = HTTPServer(server_address, HTTPHandler)
+    
+    # Запускаем сервер в отдельном потоке
+    thread = Thread(target=httpd.serve_forever)
+    thread.daemon = True
+    thread.start()
+    
+    yield httpd  # Возвращаем объект сервера для использования в тесте
+    
+    httpd.shutdown()
+    thread.join()

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from application.exceptions.http.common import BadRequestException, NotFoundException, RequiredFieldException
+from application.exceptions.http.common import BadRequestException, NotFoundException, RequiredFieldMissingException
 
 @dataclass(eq=False)
-class ExchangeRateMissingException(RequiredFieldException):
+class ExchangeRateMissingException(RequiredFieldMissingException):
     @property
     def message(self):
         return 'Exchange rate missing field'

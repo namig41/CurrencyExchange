@@ -29,11 +29,6 @@ class HTTPHandlerConfigMixin:
     
 class HTTPHandler(HTTPHandlerConfigMixin, BaseHTTPRequestHandler):
 
-    def _set_headers(self, status_code=200, content_type='text/html'):
-        self.send_response(status_code)
-        self.send_header('Content-type', content_type)
-        self.end_headers()
-
     def do_GET(self):
         request = self.parse_strategy.parse(self.path, self.headers, self.rfile)
 

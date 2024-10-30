@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
-from http.client import HTTPResponse
 from application.router.base import BaseRouter
 from application.schema.http.request import HTTPRequest
+from application.schema.http.response import HTTPResponse
 from application.schema.http.response_common import SuccessResponse
 from application.schema.router.currency import CurrencyDetailSchema
 from domain.exceptions.base import ApplicationException
@@ -19,7 +19,7 @@ class CurrencyRouter(BaseRouter):
         try:
             currency = CurrencyDetailSchema.parse_request(request, self.currencies_repository)    
         except ApplicationException as exception:
-            return HTTPResponse(status_code=exception.code, data=exception.message)
+            return HTTPResponse(status_code=exception.code, data={"message": exception.message})
         return SuccessResponse(data=currency) 
 
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:

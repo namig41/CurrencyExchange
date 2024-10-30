@@ -23,7 +23,7 @@ class CurrenciesRouter(BaseRouter):
         try:
             currencies: Iterable[Currency] = CurrenciesDetailSchema.parse_request(request, self.currencies_repository)    
         except ApplicationException as exception:
-            return HTTPResponse(status_code=exception.code, data=exception.message)
+            return HTTPResponse(status_code=exception.code, data={"message": exception.message})
         
         return SuccessResponse(data=currencies)        
 
@@ -31,7 +31,7 @@ class CurrenciesRouter(BaseRouter):
         try:
             currency: Currency = CreateNewCurrencySchema.parse_request(request, self.currencies_repository)    
         except ApplicationException as exception:
-            return HTTPResponse(status_code=exception.code, data=exception.message)
+            return HTTPResponse(status_code=exception.code, data={"message": exception.message})
         
         return SuccessResponse(data=currency)    
 

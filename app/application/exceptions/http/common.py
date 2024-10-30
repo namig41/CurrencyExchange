@@ -37,7 +37,7 @@ class InternalServerException(HTTPResponseException):
         return 'Internal Sever Error'
 
 @dataclass(eq=False)
-class RequiredFieldException(BadRequestException):
+class RequiredFieldMissingException(BadRequestException):
         
     @property
     def message(self):

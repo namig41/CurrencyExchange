@@ -23,7 +23,7 @@ class ExchangeRateRouter(BaseRouter):
             exchange_rate = ExchageRateDetailSchema.parse_request(request,
                                                               self.exchange_rates_repository)    
         except ApplicationException as exception:
-            return HTTPResponse(status_code=exception.code, data=exception.message)
+            return HTTPResponse(status_code=exception.code, data={"message": exception.message})
         return SuccessResponse(data=exchange_rate) 
             
 
@@ -36,7 +36,7 @@ class ExchangeRateRouter(BaseRouter):
                                                               self.currencies_repository,
                                                               self.exchange_rates_repository)    
         except ApplicationException as exception:
-            return HTTPResponse(status_code=exception.code, data=exception.message)
+            return HTTPResponse(status_code=exception.code, data={"message": exception.message})
         return SuccessResponse(data=exchange_rate) 
         
         

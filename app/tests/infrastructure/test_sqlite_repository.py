@@ -10,7 +10,7 @@ def test_add_currency_in_repository(currencies_sqlite_repository: BaseCurrencies
     
     currency: Currency  = Currency('AZN', 'Azerbaijani manat', '₼', id=4)
     currencies_sqlite_repository.add_currency(currency)
-    currency_returned: Currency = currencies_sqlite_repository.get_currency_by_id(currency.id)
+    currency_returned: Currency = currencies_sqlite_repository.get_currency_by_code(currency.code)
     assert currency_returned == currency
     
 def test_get_currencies_in_repository(currencies_sqlite_repository: BaseCurrenciesRepository):

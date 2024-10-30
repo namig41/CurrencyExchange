@@ -29,7 +29,7 @@ class SQLiteDatabase(BaseDatabase):
 
     def connect(self):
         try:
-            self.connection = sqlite3.connect(self.path)
+            self.connection = sqlite3.connect(self.path, check_same_thread=False)
             self.cursor = self.connection.cursor()
             self._is_connected = True
             self.logger.info('Соединение с базой данных успешно выполнена')
