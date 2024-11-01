@@ -19,11 +19,11 @@ class ExchangeRouter(BaseRouter):
 
     def handle_get(self, request: HTTPRequest) -> HTTPResponse:
         try:
-            exchange_rate = ExchageConvertSchema.parse_request(request,
-                                                              self.exchange_rates_repository)    
+            exchange_data = ExchageConvertSchema.parse_request(request,
+                                                              self.exchange_rates_repository)             
         except ApplicationException as exception:
             return HTTPResponse(status_code=exception.code, data={"message": exception.message})
-        return SuccessResponse(data=exchange_rate) 
+        return SuccessResponse(data=exchange_data) 
     
     def handle_post(self, request: HTTPRequest) -> HTTPResponse:
         return NotFoundResponse()

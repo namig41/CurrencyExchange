@@ -4,6 +4,8 @@ import pytest
 from pytest_asyncio import fixture
 
 from application.api.handler import HTTPHandler
+from infrastructure.database.base import BaseDatabase
+from infrastructure.database.sqlite import sqlite_database_factory
 from infrastructure.repositories.base import BaseCurrenciesRepository, BaseExchangeRatesRepository
 from infrastructure.repositories.memory import MemoryCurrenciesRepository
 from infrastructure.repositories.sqlite import sqlite_currencies_repository_factory, sqlite_exchange_rates_repository_factory
@@ -20,6 +22,10 @@ def currencies_sqlite_repository() -> BaseCurrenciesRepository:
 @fixture
 def exchange_rates_sqlite_repository() -> BaseExchangeRatesRepository:
     return sqlite_exchange_rates_repository_factory()
+
+@fixture
+def sqlite_database() -> BaseDatabase:
+    return sqlite_database_factory()
 
 
 @pytest.fixture(scope="module")

@@ -1,4 +1,3 @@
-from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler
 
 import json
@@ -11,7 +10,6 @@ from application.router.exchange_rates import ExchangeRatesRouter
 from application.router.exchange_rate import ExchangeRateRouter
 from application.router.exchange import ExchangeRouter
 
-from application.schema.http.request import HTTPRequest
 from application.schema.http.response import HTTPResponse
 from application.schema.http.response_common import NotFoundResponse
 

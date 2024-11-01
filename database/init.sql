@@ -26,5 +26,5 @@ VALUES
 
 INSERT INTO ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate) 
 VALUES 
-    (1, 1, 2, 0.92),
-    (2, 1, 3, 1.45);
+    (1, 1, 2, 0.5),
+    (2, 1, 3, 0.5);

@@ -10,7 +10,7 @@ from infrastructure.repositories.base import BaseCurrenciesRepository
 from infrastructure.repositories.converters import convert_currency_document_to_entity, convert_currency_entity_to_document
   
 @dataclass
-class CurrencyDetailSchema(BaseSchema):
+class CurrencyDetailSchema(BaseSchema[Iterable[Currency]]):
     
     def check_request(request: HTTPRequest):
         if len(request.parts) != 2:

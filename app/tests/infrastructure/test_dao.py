@@ -4,8 +4,7 @@ from infrastructure.database.base import BaseDatabase
 from infrastructure.database.sqlite import SQLiteDatabase, sqlite_database_factory
 
 
-def test_currencies_dao_init():
-    database: BaseDatabase = sqlite_database_factory()
+def test_currencies_dao_init(database: BaseDatabase):
     currencies_dao = CurrenciesDAO(database=database)
         
     assert currencies_dao.table_name == 'currencies'
@@ -18,8 +17,7 @@ def test_currencies_dao_init():
                              'sign': '$'}
     
     
-def test_currencies_dao_init():
-    database: BaseDatabase = sqlite_database_factory()
+def test_currencies_dao_init(database: BaseDatabase):
     exchange_rates_dao = ExchangeRatesDAO(database=database)
         
     assert exchange_rates_dao.table_name == 'ExchangeRates'
@@ -29,4 +27,4 @@ def test_currencies_dao_init():
     assert exchange_rate_data == {'id': 1,
                              'basecurrencyid': 1,
                              'targetcurrencyid': 2,
-                             'rate': 0.92}
+                             'rate': 0.5}

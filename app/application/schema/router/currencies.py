@@ -11,7 +11,7 @@ from infrastructure.repositories.converters import convert_currency_document_to_
 
 
 @dataclass
-class CurrenciesDetailSchema(BaseSchema):
+class CurrenciesDetailSchema(BaseSchema[Iterable[Currency]]):
     
     def check_request(request: HTTPRequest):
         if len(request.parts) != 1:
@@ -31,7 +31,7 @@ class CurrenciesDetailSchema(BaseSchema):
             raise exception
         
 @dataclass
-class CreateNewCurrencySchema(BaseSchema):
+class CreateNewCurrencySchema(BaseSchema[Currency]):
     
     def check_request(request: HTTPRequest):
         if not request.body:
@@ -65,7 +65,6 @@ class CreateNewCurrencySchema(BaseSchema):
             )
             
             # TODO: Оптимизировать количество запросов
-                    
             if currencies_repository.get_currency_by_code(currency_data["code"]):
                 raise CurrencyAlreadyExistsException()
                 

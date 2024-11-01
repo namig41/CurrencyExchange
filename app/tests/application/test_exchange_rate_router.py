@@ -23,7 +23,7 @@ def test_get_exchange_rate(http_server: HTTPServer):
             "code": "AUD",
             "sign": "A€"
         },
-        "rate": 1.45
+        "rate": 0.5
     } 
     
     assert response.json() == expected_data

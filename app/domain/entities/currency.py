@@ -3,6 +3,7 @@ from itertools import count
 from uuid import uuid4
 
 from domain.entities.base import BaseEntity
+from domain.value_objects.code import Code
 
 @dataclass
 class Currency(BaseEntity):
@@ -10,7 +11,7 @@ class Currency(BaseEntity):
         default_factory=count().__next__,
         kw_only=True,
     )
-    code: str
+    code: Code
     fullname: str
     sign: str
     
