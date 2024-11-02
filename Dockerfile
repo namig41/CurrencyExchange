@@ -21,3 +21,5 @@ RUN poetry install --no-root --no-interaction --no-ansi
 
 # Копирование остального кода
 COPY /app/* /app/
+
+COPY ./database /database

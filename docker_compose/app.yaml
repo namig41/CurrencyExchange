@@ -2,16 +2,18 @@ services:
   main-app:
     container_name: main-app
     build: ..
-    command: 'python3 application/api/main.py --bind 0.0.0.0'
+    command: 'python3 application/api/main.py'
     ports:
       - '8000:8000'
     volumes:
       - ../app/:/app
-      - .env:/app.env
+      - ../database:/database
     env_file:
       - ../.env
     environment:
-      - PYTHONPATH=/app
+      - PYTHONPATH = /app
+      - DB_SQLITE_PATH = /database/db.db
+      - DB_SQLITE_INIT = /database/init.sql
     networks:
       - backend
 
