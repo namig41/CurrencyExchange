@@ -22,7 +22,7 @@ REST API для описания валют и обменных курсов. П
         "name": "United States dollar",
         "code": "USD",
         "sign": "$"
-    },   
+    },
     {
         "id": 0,
         "name": "Euro",

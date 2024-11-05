@@ -7,4 +7,4 @@ from domain.exceptions.base import ApplicationException
 class InfrastructureException(ApplicationException):
     @property
     def message(self):
-        return 'Ошибка на уровне инфраструктуры'
+        return "Ошибка на уровне инфраструктуры"

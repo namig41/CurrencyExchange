@@ -2,50 +2,56 @@ from dataclasses import dataclass
 
 from application.exceptions.http.base import HTTPResponseException
 
+
 @dataclass(eq=False)
 class BadRequestException(HTTPResponseException):
-    
+
     code: int = 400
-        
+
     @property
     def message(self):
-        return 'Bad request'
+        return "Bad request"
+
 
 @dataclass(eq=False)
 class NotFoundException(HTTPResponseException):
-    
+
     code: int = 404
-    
+
     @property
     def message(self):
-        return 'Not Found'
+        return "Not Found"
+
 
 @dataclass(eq=False)
 class ConflictException(HTTPResponseException):
-    
+
     code: int = 409
-    
+
     @property
     def message(self):
-        return 'Conflict error'
-    
+        return "Conflict error"
+
+
 @dataclass(eq=False)
 class InternalServerException(HTTPResponseException):
-        
+
     @property
     def message(self):
-        return 'Internal Sever Error'
+        return "Internal Sever Error"
+
 
 @dataclass(eq=False)
 class RequiredFieldMissingException(BadRequestException):
-        
+
     @property
     def message(self):
-        return 'Required field is missing'
+        return "Required field is missing"
+
 
 @dataclass(eq=False)
 class DatabaseException(InternalServerException):
-        
+
     @property
     def message(self):
-        return 'Database not exist'
+        return "Database not exist"

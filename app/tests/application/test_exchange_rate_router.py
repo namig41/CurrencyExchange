@@ -1,13 +1,15 @@
 from http.server import HTTPServer
+
 import requests
+
 
 def test_get_exchange_rate(http_server: HTTPServer):
     # Отправляем GET-запрос к серверу
     response = requests.get("http://localhost:8000/exchangeRate/USDAUD")
-    
+
     # Проверяем код ответа
     assert response.status_code == 200
-    
+
     # Проверяем содержимое ответа
     expected_data = {
         "id": 2,
@@ -15,44 +17,45 @@ def test_get_exchange_rate(http_server: HTTPServer):
             "id": 1,
             "fullname": "United States dollar",
             "code": "USD",
-            "sign": "$"
+            "sign": "$",
         },
         "targetCurrency": {
             "id": 3,
             "fullname": "Australian dollar",
             "code": "AUD",
-            "sign": "A€"
+            "sign": "A€",
         },
-        "rate": 0.5
-    } 
-    
+        "rate": 0.5,
+    }
+
     assert response.json() == expected_data
-    
-    
+
+
 def test_get_exchange_rate_required_field_missing(http_server: HTTPServer):
     # Отправляем GET-запрос к серверу
     response = requests.get("http://localhost:8000/exchangeRate/")
-    
+
     # Проверяем код ответа
     assert response.status_code == 400
-    
+
     # Проверяем содержимое ответа
     expected_data = {
-        "message": "Exchange rate missing field"
-    }  
-    
+        "message": "Exchange rate missing field",
+    }
+
     assert response.json() == expected_data
-    
+
+
 def test_get_exchange_rate_not_found(http_server: HTTPServer):
     # Отправляем GET-запрос к серверу
     response = requests.get("http://localhost:8000/exchangeRate/USDAAA")
-    
+
     # Проверяем код ответа
     assert response.status_code == 404
-    
+
     # Проверяем содержимое ответа
     expected_data = {
-        "message": "Exchange rate for pair not found"
-    }  
-    
+        "message": "Exchange rate for pair not found",
+    }
+
     assert response.json() == expected_data

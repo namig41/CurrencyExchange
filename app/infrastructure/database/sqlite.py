@@ -1,14 +1,22 @@
-from dataclasses import dataclass, field
-from functools import lru_cache
-from logging import Logger
 import sqlite3
+from dataclasses import (
+    dataclass,
+    field,
+)
+from functools import lru_cache
 
-from domain.exceptions.base import ApplicationException
 from infrastructure.database.base import BaseDatabase
-from infrastructure.exceptions.database import ConnectionFailedException, InitQueryExecutedFailedException, QueryExecutedFailedException
+from infrastructure.exceptions.database import (
+    ConnectionFailedException,
+    InitQueryExecutedFailedException,
+    QueryExecutedFailedException,
+)
 from infrastructure.logger.base import ILogger
 from infrastructure.logger.logger import create_logger_dependency
+
+from domain.exceptions.base import ApplicationException
 from settings.config import Settings
+
 
 @dataclass
 class SQLiteDatabase(BaseDatabase):
@@ -19,10 +27,10 @@ class SQLiteDatabase(BaseDatabase):
 
     def init(self, init_path: str):
         try:
-            with open(init_path, "r") as f:
+            with open(init_path) as f:
                 init_query = f.read()
                 self.cursor.executescript(init_query)
-                self.logger.info('Инициализция прошла успешно')
+                self.logger.info("Инициализция прошла успешно")
         except ApplicationException as exception:
             self.logger.error(exception.message)
             raise InitQueryExecutedFailedException()
@@ -32,7 +40,7 @@ class SQLiteDatabase(BaseDatabase):
             self.connection = sqlite3.connect(self.path, check_same_thread=False)
             self.cursor = self.connection.cursor()
             self._is_connected = True
-            self.logger.info('Соединение с базой данных успешно выполнена')
+            self.logger.info("Соединение с базой данных успешно выполнена")
         except ApplicationException as exception:
             self.logger.error(exception.message)
             raise ConnectionFailedException()
@@ -43,12 +51,12 @@ class SQLiteDatabase(BaseDatabase):
     def execute(self, query: str, *args):
         try:
             self.cursor = self.cursor.execute(query, args)
-            self.logger.info('Запрос успешно выполнен')
+            self.logger.info("Запрос успешно выполнен")
             return self.cursor
         except ApplicationException as exception:
             self.logger.error(exception.message)
             raise QueryExecutedFailedException(query)
-            
+
     @property
     def is_open(self):
         return self._is_connected
@@ -57,7 +65,7 @@ class SQLiteDatabase(BaseDatabase):
 @lru_cache
 def sqlite_database_factory() -> BaseDatabase:
     database: BaseDatabase = SQLiteDatabase(path=Settings.DB_PATH)
-    
+
     try:
         database.connect()
         database.init(Settings.DB_INIT_PATH)

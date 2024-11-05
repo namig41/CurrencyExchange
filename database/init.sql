@@ -18,13 +18,13 @@ CREATE TABLE IF NOT EXISTS ExchangeRates (
     UNIQUE (BaseCurrencyId, TargetCurrencyId)
 );
 
-INSERT INTO Currencies (ID, Code, FullName, Sign) 
-VALUES 
+INSERT INTO Currencies (ID, Code, FullName, Sign)
+VALUES
     (1, 'USD', 'United States dollar', '$'),
     (2, 'EUR', 'Euro', '€'),
     (3, 'AUD', 'Australian dollar', 'A€');
 
-INSERT INTO ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate) 
-VALUES 
+INSERT INTO ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate)
+VALUES
     (1, 1, 2, 0.5),
     (2, 1, 3, 0.5);

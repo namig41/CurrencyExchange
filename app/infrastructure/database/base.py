@@ -1,25 +1,22 @@
-from abc import ABC, abstractmethod, ABCMeta
+from abc import (
+    ABC,
+    abstractmethod,
+)
+
 
 class BaseDatabase(ABC):
-    
-    @abstractmethod
-    def init(self, path: str):
-        ...
 
     @abstractmethod
-    def connect(self):
-        ...
+    def init(self, path: str): ...
 
     @abstractmethod
-    def close(self):
-        ...
+    def connect(self): ...
 
     @abstractmethod
-    def execute(self, query: str, *args):
-        ...
+    def close(self): ...
 
     @abstractmethod
-    def is_open(self):
-        ...
+    def execute(self, query: str, *args): ...
 
-    
+    @abstractmethod
+    def is_open(self): ...

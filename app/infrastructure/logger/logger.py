@@ -1,14 +1,15 @@
-from dataclasses import dataclass
-from functools import lru_cache
 import logging
 import sys
+from dataclasses import dataclass
+from functools import lru_cache
 from typing import TextIO
 
 from infrastructure.logger.base import ILogger
 
+
 @dataclass
 class Logger:
-    
+
     logger: logging.Logger
     error_logger: logging.Logger
 
@@ -20,6 +21,7 @@ class Logger:
 
     def debug(self, message: str) -> None:
         self.logger.debug(message)
+
 
 def logger_factory(name: str, level: int, stream: TextIO) -> logging.Logger:
     """
@@ -47,12 +49,17 @@ def logger_factory(name: str, level: int, stream: TextIO) -> logging.Logger:
 
     return logger
 
+
 @lru_cache
 def create_logger_dependency() -> ILogger:
     common_logger: logging.Logger = logger_factory(
-        name="common", level=logging.INFO, stream=sys.stdout
+        name="common",
+        level=logging.INFO,
+        stream=sys.stdout,
     )
     error_logger: logging.Logger = logger_factory(
-        name="error", level=logging.ERROR, stream=sys.stderr
+        name="error",
+        level=logging.ERROR,
+        stream=sys.stderr,
     )
     return Logger(logger=common_logger, error_logger=error_logger)

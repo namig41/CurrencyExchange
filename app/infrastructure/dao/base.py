@@ -1,49 +1,48 @@
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import Any
 
 from infrastructure.database.base import BaseDatabase
 
+
 class BaseDAO(ABC):
     """
-        Абстрактный класс, который реализует базовые манипуляции с БД
+    Абстрактный класс, который реализует базовые манипуляции с БД
     """
-    
-    @abstractmethod
-    def find_by_id(self, id: int) -> dict | None:
-        ...
 
     @abstractmethod
-    def find_by(self, **kwargs) -> dict | None:
-        ...
+    def find_by_id(self, record_id: int) -> dict | None: ...
 
     @abstractmethod
-    def find_all(self) -> list[dict[Any, Any]]:
-        ...
+    def find_by(self, **kwargs) -> dict | None: ...
 
     @abstractmethod
-    def insert(self, data) -> None:
-        ...
+    def find_all(self) -> list[dict[Any, Any]]: ...
 
     @abstractmethod
-    def update(self, data) -> None:
-        ...
+    def insert(self, data) -> None: ...
 
     @abstractmethod
-    def delete(self, **kwargs) -> None:
-        ...
+    def update(self, data) -> None: ...
+
+    @abstractmethod
+    def delete(self, **kwargs) -> None: ...
+
 
 @dataclass
 class DAO(BaseDAO):
     """
-        Класс, который реализует базовые манипуляции с БД
+    Класс, который реализует базовые манипуляции с БД
     """
-    
+
     database: BaseDatabase
     table_name: str
 
-    def find_by_id(self, id: int) -> dict | None:
-        query = "SELECT * FROM %s WHERE id = %s" % (self.table_name, id)
+    def find_by_id(self, record_id: int) -> dict | None:
+        query = f"SELECT * FROM {self.table_name} WHERE id = {record_id}"
         result = self.database.execute(query)
 
         if result:
@@ -55,7 +54,11 @@ class DAO(BaseDAO):
 
     def find_by(self, **kwargs) -> dict | None:
         conditions = " AND ".join(
-            [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
+            [
+                f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}"
+                for key, value in kwargs.items()
+            ],
+        )
         query = f"SELECT * FROM {self.table_name} WHERE {conditions}"
 
         result = self.database.execute(query)
@@ -81,25 +84,40 @@ class DAO(BaseDAO):
 
     def insert(self, data: dict) -> None:
         columns = ",".join(data.keys())
-        values = ",".join("'" + str(value) + "'" if isinstance(value, str) else str(value) for value in data.values())
+        values = ",".join(
+            "'" + str(value) + "'" if isinstance(value, str) else str(value)
+            for value in data.values()
+        )
 
-        query = "INSERT INTO  %s (%s) VALUES (%s)" % (self.table_name, columns, values)
+        query = f"INSERT INTO  {self.table_name} ({columns}) VALUES ({values})"
         self.database.execute(query)
 
     def update(self, data: dict, **kwargs) -> None:
         values = ", ".join(
-            [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in data.items()])
+            [
+                f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}"
+                for key, value in data.items()
+            ],
+        )
 
         conditions = " AND ".join(
-            [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
+            [
+                f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}"
+                for key, value in kwargs.items()
+            ],
+        )
 
-        query = "UPDATE %s SET %s WHERE %s" % (self.table_name, values, conditions)
+        query = f"UPDATE {self.table_name} SET {values} WHERE {conditions}"
         print(query)
         self.database.execute(query)
 
     def delete(self, **kwargs) -> None:
         conditions = " AND ".join(
-            [f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}" for key, value in kwargs.items()])
+            [
+                f"{key}='{value}'" if isinstance(value, str) else f"{key}={value}"
+                for key, value in kwargs.items()
+            ],
+        )
 
-        query = "DELETE FROM %s WHERE id  =  %s" % (self.table_name, conditions)
+        query = f"DELETE FROM {self.table_name} WHERE id  =  {conditions}"
         self.database.execute(query)
