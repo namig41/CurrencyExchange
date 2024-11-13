@@ -6,9 +6,23 @@ REST API для описания валют и обменных курсов. П
 
 [Техническое задание проекта](https://zhukovsd.github.io/python-backend-learning-course/Projects/CurrencyExchange/)
 
-## Для успешного запуска приложения:
+## Для запуска приложения:
 
-Запустить файл controller.py из директории controller
+1. **Клонируйте репозиторий:**
+
+   ```bash
+   git clone https://github.com/namig41/CurrencyExchange.git
+   cd CurrencyExchange
+   ```
+
+2. Установите все необходимые пакеты из раздела `Requirements`.
+
+### Реализованные команды
+
+* `make app` - запустить приложение и базу данных/инфраструктуру
+* `make app-logs` - отслеживать логи в контейнере приложения
+* `make app-down` - остановить приложение и всю инфраструктуру
+* `make shell` - открыть интерактивную оболочку (bash) внутри контейнера
 
 ## REST API
 
