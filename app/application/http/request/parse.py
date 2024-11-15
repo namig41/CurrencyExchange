@@ -35,7 +35,7 @@ class ParseRequest(ParseHTTPRequestStrategy):
             try:
                 http_request.body = json.loads(content)
             except json.JSONDecodeError:
-                http_request.body = None  # или обработка ошибки
+                http_request.body = None  # or handle errors
         elif content_type == "application/x-www-form-urlencoded":
             http_request.body = parse_qs(content)
         else:
