@@ -41,8 +41,8 @@ class DAO(BaseDAO):
     database: BaseDatabase
     table_name: str
 
-    def find_by_id(self, record_id: int) -> dict | None:
-        query = f"SELECT * FROM {self.table_name} WHERE id = {record_id}"
+    def find_by_id(self, item_id: int) -> dict | None:
+        query = f"SELECT * FROM {self.table_name} WHERE id = {item_id}"
         result = self.database.execute(query)
 
         if result:
