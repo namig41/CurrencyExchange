@@ -31,8 +31,7 @@ class SQLiteDatabase(BaseDatabase):
                 init_query = f.read()
                 self.cursor.executescript(init_query)
                 self.logger.info("Инициализция прошла успешно")
-        except ApplicationException as exception:
-            self.logger.error(exception.message)
+        except sqlite3.DatabaseError:
             raise InitQueryExecutedFailedException()
 
     def connect(self):
@@ -41,9 +40,8 @@ class SQLiteDatabase(BaseDatabase):
             self.cursor = self.connection.cursor()
             self._is_connected = True
             self.logger.info("Соединение с базой данных успешно выполнена")
-        except ApplicationException as exception:
-            self.logger.error(exception.message)
-            raise ConnectionFailedException()
+        except sqlite3.DatabaseError:
+             raise ConnectionFailedException()
 
     def close(self):
         self.connection.close()
@@ -53,8 +51,7 @@ class SQLiteDatabase(BaseDatabase):
             self.cursor = self.cursor.execute(query, args)
             self.logger.info("Запрос успешно выполнен")
             return self.cursor
-        except ApplicationException as exception:
-            self.logger.error(exception.message)
+        except sqlite3.DatabaseError:
             raise QueryExecutedFailedException(query)
 
     @property
@@ -71,4 +68,6 @@ def sqlite_database_factory() -> BaseDatabase:
         database.init(Settings.DB_INIT_PATH)
         return database
     except ApplicationException as exception:
+        logger: ILogger = create_logger_dependency()
+        logger.error(exception.message)
         raise exception

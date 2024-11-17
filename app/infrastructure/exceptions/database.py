@@ -23,4 +23,4 @@ class QueryExecutedFailedException(InfrastructureException):
 class InitQueryExecutedFailedException(InfrastructureException):
     @property
     def message(self):
-        return "Ошибка при выполнения инициализация запроса"
+        return "Ошибка при выполнения инициализации базы данных"

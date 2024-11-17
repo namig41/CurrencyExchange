@@ -24,10 +24,10 @@ class Settings:
     DB_PATH = config.get(
         "DATABASE",
         "DB_PATH",
-        fallback=os.getenv("DB_SQLITE_PATH", "/database/db.db"),
+        fallback=os.getenv("DB_SQLITE_PATH", "database/db.db"),
     )
     DB_INIT_PATH = config.get(
         "DATABASE",
         "DB_INIT_PATH",
-        fallback=os.getenv("DB_SQLITE_INIT", "/database/init.sql"),
+        fallback=os.getenv("DB_SQLITE_INIT", "database/init.sql"),
     )
