@@ -3,7 +3,16 @@ from typing import Iterable
 
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
+from domain.value_objects.currency_code import Code
 from domain.value_objects.rate import Rate
+
+
+def convert_currency_entity_without_id_to_document(currency: Currency) -> dict:
+    return {
+        "code": currency.code.as_generic_type(),
+        "fullname": currency.fullname,
+        "sign": currency.sign,
+    }
 
 
 def convert_currency_entity_to_document(currency: Currency) -> dict:
@@ -17,7 +26,7 @@ def convert_currency_entity_to_document(currency: Currency) -> dict:
 
 def convert_currency_document_to_entity_without_id(currency_data: dict) -> Currency:
     return Currency(
-        code=currency_data["code"],
+        code=Code(currency_data["code"]),
         fullname=currency_data["fullname"],
         sign=currency_data["sign"],
     )

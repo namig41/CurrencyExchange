@@ -41,7 +41,7 @@ class SQLiteDatabase(BaseDatabase):
             self._is_connected = True
             self.logger.info("Соединение с базой данных успешно выполнена")
         except sqlite3.DatabaseError:
-             raise ConnectionFailedException()
+            raise ConnectionFailedException()
 
     def close(self):
         self.connection.close()

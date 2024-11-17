@@ -12,7 +12,7 @@ from infrastructure.repositories.base import (
 )
 from infrastructure.repositories.converters import (
     convert_currency_document_to_entity,
-    convert_currency_entity_to_document,
+    convert_currency_entity_without_id_to_document,
     convert_exchange_rate_all_document_to_entity,
     convert_exchange_rate_document_to_entity,
     convert_exchange_rate_entity_to_document,
@@ -56,10 +56,8 @@ class SQLiteCurrenciesRepository(BaseCurrenciesRepository):
         return convert_currency_document_to_entity(currency_data)
 
     def add_currency(self, currency: Currency) -> None:
-        currecny_data: dict = convert_currency_entity_to_document(currency)
-        del currecny_data["id"]
-
-        self.currencies_dao.insert(currecny_data)
+        currency_data: dict = convert_currency_entity_without_id_to_document(currency)
+        self.currencies_dao.insert(currency_data)
 
 
 @dataclass
