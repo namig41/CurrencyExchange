@@ -72,6 +72,7 @@ class ExchageRatesCreateSchema(BaseSchema):
 
             base_currency_code = request.body["baseCurrencyCode"][0]
             target_currency_code = request.body["targetCurrencyCode"][0]
+            rate = Rate(Decimal(request.body["rate"][0]))
 
             base_currency = currencies_repository.get_currency_by_code(
                 currency_code=base_currency_code,
@@ -86,8 +87,6 @@ class ExchageRatesCreateSchema(BaseSchema):
 
             if target_currency is None:
                 raise CurrencyNotFoundException()
-
-            rate = Rate(Decimal(request.body["rate"][0]))
 
             exchange_rate = ExchangeRate(base_currency, target_currency, rate)
 

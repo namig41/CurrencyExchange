@@ -47,8 +47,8 @@ class SQLiteCurrenciesRepository(BaseCurrenciesRepository):
 
         return convert_currency_document_to_entity(currency_data)
 
-    def get_currency_by_code(self, code: str) -> Currency | None:
-        currency_data: dict = self.currencies_dao.find_by(code=code)
+    def get_currency_by_code(self, currency_code: str) -> Currency | None:
+        currency_data: dict = self.currencies_dao.find_by(code=currency_code)
 
         if currency_data is None:
             return None
@@ -117,6 +117,7 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
         exchange_rate_data["targetCurrencyId"] = exchange_rate_data["targetCurrency"][
             "id"
         ]
+        del exchange_rate_data["id"]
         del exchange_rate_data["baseCurrency"]
         del exchange_rate_data["targetCurrency"]
 
@@ -127,7 +128,6 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
         return convert_exchange_rates_document_to_entity(exchange_rates_data)
 
     def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
-
         self.exchange_rates_dao.update(
             {"rate": exchange_rate.rate.value},
             BaseCurrencyId=exchange_rate.base_currency.id,

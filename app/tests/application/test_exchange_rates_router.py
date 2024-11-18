@@ -64,7 +64,7 @@ def test_get_exchange_rates_required_field_missing(http_server: HTTPServer):
     assert response.json() == expected_data
 
 
-def test_patch_exchange_rates_add(http_server: HTTPServer):
+def test_post_exchange_rates_add(http_server: HTTPServer):
 
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
