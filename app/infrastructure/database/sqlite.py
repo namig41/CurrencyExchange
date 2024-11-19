@@ -30,8 +30,9 @@ class SQLiteDatabase(BaseDatabase):
             with open(init_path) as f:
                 init_query = f.read()
                 self.cursor.executescript(init_query)
-                self.logger.info("Инициализция прошла успешно")
+                self.logger.info("Инициализция базы данных прошла успешно")
         except sqlite3.DatabaseError:
+            self.logger.error("При инициализции базы данных произошла ошибка")
             raise InitQueryExecutedFailedException()
 
     def connect(self):
@@ -41,6 +42,7 @@ class SQLiteDatabase(BaseDatabase):
             self._is_connected = True
             self.logger.info("Соединение с базой данных успешно выполнена")
         except sqlite3.DatabaseError:
+            self.logger.info("Не удалось соединиться с базой данных")
             raise ConnectionFailedException()
 
     def close(self):
@@ -49,9 +51,10 @@ class SQLiteDatabase(BaseDatabase):
     def execute(self, query: str, *args):
         try:
             self.cursor = self.cursor.execute(query, args)
-            self.logger.info("Запрос успешно выполнен")
+            self.logger.info("Запрос успешно выполнен: {query}")
             return self.cursor
         except sqlite3.DatabaseError:
+            self.logger.error("Ошибка в запросе: {query}")
             raise QueryExecutedFailedException(query)
 
     @property

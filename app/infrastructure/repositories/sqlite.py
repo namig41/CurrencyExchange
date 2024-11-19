@@ -129,7 +129,7 @@ class SQLiteExchangeRatesRepository(BaseExchangeRatesRepository):
 
     def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         self.exchange_rates_dao.update(
-            {"rate": exchange_rate.rate.value},
+            {"rate": exchange_rate.rate.as_generic_type()},
             BaseCurrencyId=exchange_rate.base_currency.id,
             TargetCurrencyId=exchange_rate.target_currency.id,
         )

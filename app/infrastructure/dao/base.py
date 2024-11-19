@@ -108,7 +108,6 @@ class DAO(BaseDAO):
         )
 
         query = f"UPDATE {self.table_name} SET {values} WHERE {conditions}"
-        print(query)
         self.database.execute(query)
 
     def delete(self, **kwargs) -> None:

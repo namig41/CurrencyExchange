@@ -72,6 +72,7 @@ class ExchageRateUpdateSchema(BaseSchema):
                 currency_pair[:3],
                 currency_pair[3:],
             )
+            rate: Rate = Rate(Decimal(request.body["rate"][0]))
 
             base_currency = currencies_repository.get_currency_by_code(
                 currency_code=base_currency_code,
@@ -79,7 +80,6 @@ class ExchageRateUpdateSchema(BaseSchema):
             target_currency = currencies_repository.get_currency_by_code(
                 currency_code=target_currency_code,
             )
-            rate: Rate = Rate(Decimal(request.body["rate"][0]))
 
             exchange_rate: ExchangeRate = ExchangeRate(
                 base_currency,
